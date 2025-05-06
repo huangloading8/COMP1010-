@@ -2,15 +2,15 @@ package src;
 import java.util.ArrayList;
 
 public class Video {
-    int videoID;
-    String title;
-    String description;
-    int viewCount;
-    int likeCount;
-    ArrayList<Comment> comment;
-    int duration;
-    int dateUploaded;
-    Channel channel;
+    private int videoID;
+    private String title;
+    private String description;
+    private int viewCount;
+    private int likeCount;
+    private ArrayList<Comment> comments;
+    private int duration; // in seconds
+    private int dateUploaded;
+    private Channel channel;
 
     public Video(int videoID, String title, String description, int duration, int dateUploaded, Channel channel) {
         this.videoID = videoID;
@@ -21,7 +21,22 @@ public class Video {
         this.channel = channel;
         this.viewCount = 0;
         this.likeCount = 0;
-        this.comment = new ArrayList<>();
+        this.comments = new ArrayList<>();
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void incrementViewCount() {
+        viewCount++;
+    }
+
+    public void likeVideo() {
+        likeCount++;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }
-
