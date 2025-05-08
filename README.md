@@ -1,4 +1,4 @@
-# COMP1010-
+# COMP1010 Group
 
 (3 marks) Documentation - Providing a README.txt file as a part of the zip
 file you submit, which describes the following,
