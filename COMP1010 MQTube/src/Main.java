@@ -15,7 +15,7 @@ public class Main {
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
-        User user = new User(username, email, password);
+        User newUser = User.createAccount(username, email, password);
         System.out.println("User account created.\n");
 
         // 2. Create channel
@@ -25,7 +25,7 @@ public class Main {
         System.out.print("Enter channel description: ");
         String channelDescription = scanner.nextLine();
 
-        Channel channel = new Channel(channelName, user, channelDescription);
+        Channel channel = new Channel(channelName, newUser, channelDescription);
         System.out.println("Channel created.\n");
 
         // 3. Upload a video

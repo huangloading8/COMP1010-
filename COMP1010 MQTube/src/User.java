@@ -22,18 +22,27 @@ public class User {
         return this.password.equals(password); // Simplified
     }
 
-    public boolean createAccount() {
-        
+    public static User createAccount(String username, String email, String password) {
+        User newUser = new User(username, email, password);
         System.out.println("Account created for user: " + username);
-        return true;
+        return newUser;
     }
 
     public boolean login(String identifier, String password) {
-        return (this.username.equals(identifier) || this.email.equals(identifier)) && authenticate(password);
+        if (this.username.equals(identifier) || this.email.equals(identifier)) {
+            if (authenticate(password)) {
+                System.out.println("Login Success");
+                return true;
+            } else {
+                System.out.println("Wrong Password");
+                return false;
+            }
+        }
+        System.out.println("Username or Email not valid");
+        return false;
     }
-
     
     public Channel createChannel(String channelName, String channelDescription) {
-        return new Channel(channelName, channelDescription, );
+        return new Channel(channelName, this, channelDescription);
     }
 }
