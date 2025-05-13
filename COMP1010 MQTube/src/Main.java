@@ -50,7 +50,7 @@ public class Main {
         System.out.print("Enter playlist name: ");
         String playlistName = scanner.nextLine();
 
-        Playlist playlist = new Playlist(playlistName, user);
+        Playlist playlist = new Playlist(playlistName, newUser);
         playlist.addVideo(video);
         System.out.println("Playlist created and video added.\n");
 
@@ -58,13 +58,13 @@ public class Main {
         System.out.print("Enter comment content: ");
         String commentContent = scanner.nextLine();
 
-        Comment comment = new Comment("c1", user.getUsername(), user.getEmail(), commentContent, dateUploaded, video);
+        Comment comment = new Comment("c1", newUser.getUsername(), newUser.getEmail(), commentContent, dateUploaded, video);
         video.addComment(comment);
         System.out.println("Comment added.\n");
 
         // Summary output
         System.out.println("\n===== MqTube Summary =====");
-        System.out.println("User: " + user.getUsername());
+        System.out.println("User: " + newUser.getUsername());
         System.out.println("Channel: " + channel.getChannelName());
         System.out.println("Uploaded Video: " + video.getTitle());
         System.out.println("Playlist: " + playlist.getPlaylistName());
