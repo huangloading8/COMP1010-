@@ -24,7 +24,6 @@ public class User {
 
     public static User createAccount(String username, String email, String password) {
         User newUser = new User(username, email, password);
-        System.out.println("Account created for user: " + username);
         return newUser;
     }
 
@@ -32,6 +31,7 @@ public class User {
         if (this.username.equals(identifier) || this.email.equals(identifier)) {
             if (authenticate(password)) {
                 System.out.println("Login Success");
+                System.out.println("=== Welcome, " + this.username + "!" + " ===");
                 return true;
             } else {
                 System.out.println("Wrong Password");

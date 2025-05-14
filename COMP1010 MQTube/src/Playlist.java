@@ -23,4 +23,8 @@ public class Playlist {
     public String getPlaylistName() {
         return playlistName;
     }
+
+    public User getOwner() {
+        return owner;
+} 
 }

@@ -7,10 +7,10 @@ public class Video {
     private String description;
     private int viewCount;
     private int likeCount;
-    private ArrayList<Comment> comments;
-    private int duration; // in seconds
+    private int duration;
     private int dateUploaded;
     private Channel channel;
+    private ArrayList<Comment> comments;
 
     public Video(int videoID, String title, String description, int duration, int dateUploaded, Channel channel) {
         this.videoID = videoID;
@@ -24,19 +24,43 @@ public class Video {
         this.comments = new ArrayList<>();
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public int getDateUploaded() {
+        return dateUploaded;
+    }
+
+    public int getVideoID() {
+        return videoID;
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
     public void addComment(Comment comment) {
         comments.add(comment);
     }
 
-    public void incrementViewCount() {
-        viewCount++;
-    }
-
-    public void likeVideo() {
-        likeCount++;
-    }
-
-    public String getTitle() {
-        return title;
+    public ArrayList<Comment> getComments() {
+        return comments;
     }
 }
