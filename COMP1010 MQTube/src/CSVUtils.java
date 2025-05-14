@@ -1,54 +1,81 @@
 package src;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
+import java.io.*;
+import java.util.ArrayList;
 
 public class CSVUtils {
 
-    private static final String FILE_NAME = "videos.csv";
-
-    // Call this once to export all existing videos at start
-    public static void exportAllVideosToCSV(List<Channel> channels) {
-        try (FileWriter writer = new FileWriter(FILE_NAME)) {
-            writer.append("VideoID,Title,Description,Duration,DateUploaded,ChannelName\n");
-
-            for (Channel channel : channels) {
-                for (Video video : channel.getVideos()) {
-                    writer.append(String.valueOf(video.getVideoID())).append(",");
-                    writer.append(escape(video.getTitle())).append(",");
-                    writer.append(escape(video.getDescription())).append(",");
-                    writer.append(String.valueOf(video.getDuration())).append(",");
-                    writer.append(String.valueOf(video.getDateUploaded())).append(",");
-                    writer.append(escape(channel.getChannelName())).append("\n");
-                }
-            }
-
-            System.out.println("All videos exported to videos.csv.");
-        } catch (IOException e) {
-            System.out.println("Error writing CSV: " + e.getMessage());
-        }
-    }
-
-    // Appends a single video after upload
+    // Method to append a new video to the user's CSV file
     public static void appendVideoToCSV(Video video) {
-        try (FileWriter writer = new FileWriter(FILE_NAME, true)) {
-            writer.append(String.valueOf(video.getVideoID())).append(",");
-            writer.append(escape(video.getTitle())).append(",");
-            writer.append(escape(video.getDescription())).append(",");
-            writer.append(String.valueOf(video.getDuration())).append(",");
-            writer.append(String.valueOf(video.getDateUploaded())).append(",");
-            writer.append(escape(video.getChannel().getChannelName())).append("\n");
+        // Use the channel owner's username for the file name
+        String filename = video.getChannel().getOwner().getUsername() + "_videos.csv";
+        
+        try (FileWriter writer = new FileWriter(filename, true)) {
+            // Append the video details in CSV format
+            writer.append(video.getVideoID() + ",");
+            writer.append(video.getTitle() + ",");
+            writer.append(video.getDescription() + ",");
+            writer.append(video.getDuration() + ",");
+            writer.append(video.getDateUploaded() + ",");
+            writer.append(video.getChannel().getChannelName());
+            writer.append("\n");
         } catch (IOException e) {
-            System.out.println("Error appending to CSV: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    // Escape commas and quotes in text
-    private static String escape(String text) {
-        if (text.contains(",") || text.contains("\"")) {
-            text = text.replace("\"", "\"\"");
-            return "\"" + text + "\"";
+    // Method to load videos from the user's CSV file
+    public static ArrayList<Video> loadVideosForUser(Channel channel) {
+        ArrayList<Video> videos = new ArrayList<>();
+        String filename = channel.getOwner().getUsername() + "_videos.csv";
+
+        // Check if the file exists
+        File file = new File(filename);
+        if (!file.exists()) return videos; // If no file exists, return an empty list
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            // Read each line from the CSV file
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                // Parse video details from the CSV line
+                int id = Integer.parseInt(data[0]);
+                String title = data[1];
+                String description = data[2];
+                int duration = Integer.parseInt(data[3]);
+                int date = Integer.parseInt(data[4]);
+                
+                // Add the video to the list
+                videos.add(new Video(id, title, description, duration, date, channel));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return text;
+
+        return videos;
+    }
+    
+    // Method to export all videos of all channels to CSV (Optional)
+    public static void exportAllVideosToCSV(ArrayList<Channel> channels) {
+        for (Channel channel : channels) {
+            // Use the channel owner's username for the file name
+            String filename = channel.getOwner().getUsername() + "_videos.csv";
+            
+            try (FileWriter writer = new FileWriter(filename)) {
+                // Write header row in the CSV
+                writer.append("VideoID,Title,Description,Duration,DateUploaded,ChannelName\n");
+                // Iterate through each video in the channel
+                for (Video video : channel.getVideos()) {
+                    writer.append(video.getVideoID() + ",");
+                    writer.append(video.getTitle() + ",");
+                    writer.append(video.getDescription() + ",");
+                    writer.append(video.getDuration() + ",");
+                    writer.append(video.getDateUploaded() + ",");
+                    writer.append(video.getChannel().getChannelName());
+                    writer.append("\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

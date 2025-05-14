@@ -31,7 +31,7 @@ public class Main {
         charlieChannel.uploadVideo(new Video(6, "How to Use GitHub for Assignments", "Version control tips for COMP units", 360, 20250406, charlieChannel));
         channels.add(charlieChannel);
 
-        // CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
+        //CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
 
         // Login Feature
         System.out.println("=== Welcome to MqTube! ===");
