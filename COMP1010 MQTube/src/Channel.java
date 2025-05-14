@@ -40,4 +40,16 @@ public class Channel {
         return owner;
     }
 
+    public boolean deleteVideo(int videoID) {
+        for (int i = 0; i < videos.size(); i++) {
+            if (videos.get(i).getVideoID() == videoID) {
+                videos.remove(i);
+                System.out.println("Video ID " + videoID + " has been deleted.");
+                return true;
+            }
+        }
+        System.out.println("Video ID " + videoID + " not found.");
+        return false;
+    }
+
 }

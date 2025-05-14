@@ -116,7 +116,23 @@ public class Main {
 
 
             } else if (action == 4) {
-                System.out.println("Delete video feature not yet implemented.");
+                System.out.println("Enter the video ID to delete:");
+                int videoID = Integer.parseInt(scanner.nextLine());
+            
+                boolean videoFound = false;
+                for (Channel c : channels) {
+                    // Only allow deletion if the logged-in user owns the channel
+                    if (c.getOwner().equals(loggedInUser)) {
+                        if (c.deleteVideo(videoID)) {
+                            videoFound = true;
+                            break;
+                        }
+                    }
+                }
+            
+                if (!videoFound) {
+                    System.out.println("No video with ID " + videoID + " found in your channels.");
+                }
             } else if (action == 5) {
                 System.out.println("Edit playlist feature not yet implemented.");
             } else if (action == 6) {
