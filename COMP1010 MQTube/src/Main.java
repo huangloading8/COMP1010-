@@ -1,34 +1,53 @@
 package src;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // 1. Register user
-        System.out.print("Enter username: ");
-        String username = scanner.nextLine();
+        // Predefined users (already registered): 
+        ArrayList<User> users = new ArrayList<>();
+        users.add(User.createAccount("alice", "alice@example.com", "pass123"));
+        users.add(User.createAccount("bob", "bob@example.com", "bobpass"));
+        users.add(User.createAccount("charlie", "charlie@example.com", "charliepw"));
 
-        System.out.print("Enter email: ");
-        String email = scanner.nextLine();
+        //Login Feature:
+        System.out.println("=== Welcome to MqTube ===");
+        System.out.println("Please log in with your username or email.");
 
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
+        User loggedInUser = null;
 
-        User newUser = User.createAccount(username, email, password);
-        System.out.println("User account created.\n");
+        while (loggedInUser == null) {
+            System.out.print("Enter username or email: ");
+            String identifier = scanner.nextLine();
 
-        // 2. Create channel
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+
+            for (User user : users) {
+                if (user.login(identifier, password)) {
+                    loggedInUser = user;
+                    break;
+                }
+            }
+
+            if (loggedInUser == null) {
+                System.out.println("Login failed. Please try again.\n");
+            }
+        }
+
+        // After user is logged in: 
         System.out.print("Enter channel name: ");
         String channelName = scanner.nextLine();
 
         System.out.print("Enter channel description: ");
         String channelDescription = scanner.nextLine();
 
-        Channel channel = new Channel(channelName, newUser, channelDescription);
+        Channel channel = loggedInUser.createChannel(channelName, channelDescription);
         System.out.println("Channel created.\n");
 
-        // 3. Upload a video
+        // Upload video
         System.out.print("Enter video title: ");
         String videoTitle = scanner.nextLine();
 
@@ -46,25 +65,25 @@ public class Main {
         channel.uploadVideo(video);
         System.out.println("Video uploaded.\n");
 
-        // 4. Create playlist and add video
+        // Create playlist
         System.out.print("Enter playlist name: ");
         String playlistName = scanner.nextLine();
 
-        Playlist playlist = new Playlist(playlistName, newUser);
+        Playlist playlist = new Playlist(playlistName, loggedInUser);
         playlist.addVideo(video);
         System.out.println("Playlist created and video added.\n");
 
-        // 5. Add a comment
+        // Add comment
         System.out.print("Enter comment content: ");
         String commentContent = scanner.nextLine();
 
-        Comment comment = new Comment("c1", newUser.getUsername(), newUser.getEmail(), commentContent, dateUploaded, video);
+        Comment comment = new Comment("c1", loggedInUser.getUsername(), loggedInUser.getEmail(), commentContent, dateUploaded, video);
         video.addComment(comment);
         System.out.println("Comment added.\n");
 
-        // Summary output
+        // Summary
         System.out.println("\n===== MqTube Summary =====");
-        System.out.println("User: " + newUser.getUsername());
+        System.out.println("User: " + loggedInUser.getUsername());
         System.out.println("Channel: " + channel.getChannelName());
         System.out.println("Uploaded Video: " + video.getTitle());
         System.out.println("Playlist: " + playlist.getPlaylistName());
@@ -73,3 +92,4 @@ public class Main {
         scanner.close();
     }
 }
+
