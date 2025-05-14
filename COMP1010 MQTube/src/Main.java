@@ -31,6 +31,8 @@ public class Main {
         charlieChannel.uploadVideo(new Video(6, "How to Use GitHub for Assignments", "Version control tips for COMP units", 360, 20250406, charlieChannel));
         channels.add(charlieChannel);
 
+        // CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
+
         // Login Feature
         System.out.println("=== Welcome to MqTube! ===");
         System.out.println("Please log in with your username or email.");
@@ -107,7 +109,12 @@ public class Main {
                 int newId = newChannel.getVideos().size() + 1 + 100; // simple ID logic
                 Video newVideo = new Video(newId, title, desc, duration, date, newChannel);
                 newChannel.uploadVideo(newVideo);
+
+                CSVUtils.appendVideoToCSV(newVideo); // added this: adds newly uploaded video to exisitng CSV 
+
                 System.out.println("Video uploaded.");
+
+
             } else if (action == 4) {
                 System.out.println("Delete video feature not yet implemented.");
             } else if (action == 5) {

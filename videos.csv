@@ -1,0 +1,7 @@
+VideoID,Title,Description,Duration,DateUploaded,ChannelName
+1,Intro to Python Programming,COMP1010 crash course for beginners,600,20250401,Alice's Code Corner
+2,Understanding Data Types in Java,COMP1250 explained with examples,540,20250402,Alice's Code Corner
+3,Data Science with R,STAT1170 tips and tricks,480,20250403,Bob Learns Tech
+4,MySQL Basics,COMP1350 – Writing your first queries,420,20250404,Bob Learns Tech
+5,Intro to Web Development,"COMP115 – HTML, CSS, and JS basics",550,20250405,Charlie Builds Stuff
+6,How to Use GitHub for Assignments,Version control tips for COMP units,360,20250406,Charlie Builds Stuff
