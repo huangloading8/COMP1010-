@@ -26,6 +26,17 @@ public class Channel {
         System.out.println("Playlist \"" + name + "\" created.");
     }
 
+    public boolean removePlaylist(String name) {
+        for (int i = 0; i < playlists.size(); i++) {
+            if (playlists.get(i).getPlaylistName().equals(name)) {  
+                playlists.remove(i);
+                System.out.println("Playlist \"" + name + "\" removed.");
+                return true;
+            }
+        }
+        System.out.println("Playlist \"" + name + "\" not found.");
+        return false;
+    }
 
     public ArrayList<Video> getVideos() {
         return videos;
@@ -47,11 +58,11 @@ public class Channel {
         return channelDescription;
     }
 
-    public boolean deleteVideo(int videoID) {
+    public boolean removeVideo(int videoID) {
         for (int i = 0; i < videos.size(); i++) {
             if (videos.get(i).getVideoID() == videoID) {
                 videos.remove(i);
-                System.out.println("Video ID " + videoID + " has been deleted.");
+                System.out.println("Video ID " + videoID + " has been removed.");
                 return true;
             }
         }
