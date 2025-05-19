@@ -116,14 +116,14 @@ public class Main {
 
 
             } else if (action == 4) {
-                System.out.println("Enter the video ID to delete:");
+                System.out.println("Enter the video ID to remove:");
                 int videoID = Integer.parseInt(scanner.nextLine());
             
                 boolean videoFound = false;
                 for (Channel c : channels) {
                     // Only allow deletion if the logged-in user owns the channel
                     if (c.getOwner().equals(loggedInUser)) {
-                        if (c.deleteVideo(videoID)) {
+                        if (c.removeVideo(videoID)) {
                             videoFound = true;
                             break;
                         }
