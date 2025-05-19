@@ -18,11 +18,14 @@ public class Channel {
 
     public void uploadVideo(Video video) {
         videos.add(video);
+        System.out.println("Video \"" + video.getTitle() + "\" uploaded to channel: " + channelName); // upload successful message
     }
 
     public void createPlaylist(String name) {
         playlists.add(new Playlist(name, owner));
+        System.out.println("Playlist \"" + name + "\" created.");
     }
+
 
     public ArrayList<Video> getVideos() {
         return videos;
@@ -38,6 +41,10 @@ public class Channel {
 
     public User getOwner() {
         return owner;
+    }
+
+    public String getChannelDescription() {
+        return channelDescription;
     }
 
     public boolean deleteVideo(int videoID) {
