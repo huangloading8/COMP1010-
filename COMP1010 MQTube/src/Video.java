@@ -63,4 +63,16 @@ public class Video {
     public ArrayList<Comment> getComments() {
         return comments;
     }
+
+    public String getVideoInfo() {
+        return "Title: " + title +
+               "\nDescription: " + description +
+               "\nDuration: " + duration + " seconds" +
+               "\nUploaded on: " + dateUploaded +
+               "\nChannel: " + channel.getChannelName() +
+               "\nViews: " + viewCount +
+               "\nLikes: " + likeCount +
+               "\nComments: " + comments.size();
+    }
+
 }
