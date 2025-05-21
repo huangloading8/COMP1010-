@@ -78,4 +78,38 @@ public class CSVUtils {
             }
         }
     }
+
+     // Method to remove videos from the user's CSV file
+    public static void removeVideoFromCSV(Video video) {
+        String filename = video.getChannel().getOwner().getUsername() + "_videos.csv";
+        File inputFile = new File(filename);
+        File tempFile = new File("temp_" + filename);
+    
+        try (
+            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))
+        ) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Skip the line if it matches the video ID
+                if (line.startsWith(video.getVideoID() + ",")) {
+                    continue;
+                }
+                writer.write(line + System.lineSeparator());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+        // Replace original file with the updated temp file
+        if (!inputFile.delete()) {
+            System.err.println("Could not delete original file.");
+            return;
+        }
+    
+        if (!tempFile.renameTo(inputFile)) {
+            System.err.println("Could not rename temp file.");
+        }
+    }
+    
 }

@@ -71,7 +71,9 @@ public class Channel {
     public boolean removeVideo(int videoID) {
         for (int i = 0; i < videos.size(); i++) {
             if (videos.get(i).getVideoID() == videoID) {
-                videos.remove(i);
+                Video videoToRemove = videos.get(i);
+                videos.remove(i);                    
+                CSVUtils.removeVideoFromCSV(videoToRemove); 
                 System.out.println("Video ID " + videoID + " has been removed.");
                 return true;
             }
@@ -79,6 +81,7 @@ public class Channel {
         System.out.println("Video ID " + videoID + " not found.");
         return false;
     }
+    
 
     
 
