@@ -69,14 +69,15 @@ public class Video {
     }
 
     public String getVideoInfo() {
-        return "Title: " + title +
-               "\nDescription: " + description +
-               "\nDuration: " + duration + " seconds" +
-               "\nUploaded on: " + dateUploaded +
-               "\nChannel: " + channel.getChannelName() +
-               "\nViews: " + viewCount +
-               "\nLikes: " + likeCount +
-               "\nComments: " + comments.size();
+        return "Video ID: " + videoID +
+                "\nTitle: " + title +
+                "\nDescription: " + description +
+                "\nDuration: " + duration + " seconds" +
+                "\nUploaded on: " + dateUploaded +
+                "\nChannel: " + channel.getChannelName() +
+                "\nViews: " + viewCount +
+                "\nLikes: " + likeCount +
+                "\nComments: " + comments.size();
     }
 
     public void setVideoID(int id) {
