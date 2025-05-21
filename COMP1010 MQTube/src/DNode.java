@@ -1,12 +1,29 @@
 package src;
 
 public class DNode {
-    public int data;
+    public Video video;
 	public DNode previous, next;
-	public DNode(int data, DNode previous, DNode next) {
-		this.data = data;
-		this.previous = previous;
-		if (previous != null) { previous.next = this; }
-		if (next != null) { next.previous = this; }
+
+	public DNode(Video video){
+		this.video = video;
+		this.previous = null;
+        this.next = null;
 	}
+
+    public DNode getNext() {
+        return next;
+    }
+
+    public void setNext(DNode next) {
+        this.next = next;
+    }
+
+    public DNode getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(DNode previous) {
+        this.previous = previous;
+    }
+
 }

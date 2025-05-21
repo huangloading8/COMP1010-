@@ -1,31 +1,43 @@
 package src;
-import java.util.ArrayList;
 
 public class Playlist {
     private String playlistName;
-    private ArrayList<Video> videos;
     private User owner;
+    private DNode start;
+    private DNode end;
 
     public Playlist(String playlistName, User owner) {
         this.playlistName = playlistName;
         this.owner = owner;
-        this.videos = new ArrayList<>();
+        this.start = null;
+        this.end = null;
     }
 
     public void addVideo(Video video) {
-        videos.add(video);
+        DNode newNode = new DNode(video);
+        if (start == null) {
+            start = newNode;
+        } else {
+            end.setNext(newNode);
+            newNode.setPrevious(end);
+            end = newNode;
+        }
     }
 
-    public ArrayList<Video> getVideos() {
-        return videos;
+    public void removeVideo(DNode dnode) {
+    if (dnode == null) {
+        return;
     }
-
-    public String getPlaylistName() {
-        return playlistName;
+    if (dnode.getPrevious() != null) {
+        dnode.getPrevious().setNext(dnode.getNext());
     }
-
-    public User getOwner() {
-        return owner;
-} 
+    if (dnode.getNext() != null) {
+        dnode.getNext().setPrevious(dnode.getPrevious());
+    }
+    dnode.setPrevious(null);
+    dnode.setNext(null);
+    }
+    
+    
 }
 
