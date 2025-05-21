@@ -6,11 +6,13 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private Channel channel;
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.channel = null;
     }
 
     public String getUsername() {
@@ -46,7 +48,19 @@ public class User {
     }
     
     public Channel createChannel(String channelName, String channelDescription) {
-        return new Channel(channelName, this, channelDescription);
+        if (this.channel == null) {
+            this.channel = new Channel(channelName, this, channelDescription);
+        } else {
+            System.out.println("You already have a channel: " + channel.getChannelName());
+        }
+        return this.channel;
+    }
+    
+    public Channel getChannel() {
+        return this.channel;
+    }
+    public boolean hasChannel() {
+        return this.channel != null;
     }
 
     public ArrayList<Playlist> playlists = new ArrayList<>();
