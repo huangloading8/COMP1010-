@@ -154,7 +154,11 @@ public class Main {
                 for (Channel c : channels) {
                     // Only allow deletion if the logged-in user owns the channel
                     if (c.getOwner().equals(loggedInUser)) {
-                        if (c.removeVideo(videoID)) {
+                        Video videoToRemove = c.getVideoById(videoID); // You must implement this method
+                        if (videoToRemove != null) {
+                            c.removeVideo(videoID);
+                            CSVUtils.removeVideoFromCSV(videoToRemove);
+                            System.out.println("Video deleted and CSV updated.");
                             videoFound = true;
                             break;
                         }

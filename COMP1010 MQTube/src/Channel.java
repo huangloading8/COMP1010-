@@ -82,7 +82,15 @@ public class Channel {
         return false;
     }
     
-
+    public Video getVideoById(int id) {
+        for (Video v : videos) {
+            if (v.getVideoID() == id) {
+                return v;
+            }
+        }
+        return null;
+    }
+    
     
 
 }
