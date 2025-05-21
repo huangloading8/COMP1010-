@@ -101,6 +101,8 @@ public class Main {
                 System.out.println("\n===My Playlists===");
                 for (User u : users) {
                     System.out.println("User: " + u.getUsername());
+                    for (Channel c : channels) {
+                        System.out.println("Channel: " + c.getChannelName());
                         for (Playlist p : u.getPlaylists()) {
                             System.out.println("Playlist: " + p.getPlaylistName());
                             DNode current = p.getStart();
@@ -115,6 +117,7 @@ public class Main {
                                 current = current.getNext();
                             }
                         } 
+                    }
                 }
             } else if (action == 3) {
                 Channel userChannel = loggedInUser.getChannel();
