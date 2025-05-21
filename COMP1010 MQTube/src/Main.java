@@ -69,11 +69,20 @@ public class Main {
             System.out.println(" 4. Delete Video");
             System.out.println(" 5. Edit Playlist");
             System.out.println(" 6. Edit Channel");
-            System.out.println(" 7. Exit MqTube");
+            System.out.println(" 7. Search Videos");
+            System.out.println(" 8. Exit MqTube");
 
             System.out.print("Enter the number for your action: ");
+            
             String answer = scanner.nextLine();
-            int action = Integer.parseInt(answer);
+
+            int action;
+            try {
+                action = Integer.parseInt(answer);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number (e.g. 1, 2, 3...).");
+                continue; // skip the rest of the loop and ask again
+            }
 
             if (action == 1) {
                 // View Videos
@@ -137,7 +146,7 @@ public class Main {
                 }
             } else if (action == 5) {
                 System.out.println("Edit playlist feature not yet implemented.");
-            } else if (action == 7) {
+            } else if (action == 8) {
                 exit = true;
                 System.out.println("Goodbye from MqTube!");
             } else if (action == 6){
@@ -166,7 +175,33 @@ public class Main {
             userChannel.setDescription(newDesc);
         }
         System.out.println("Channel updated successfully.");
-    }
+    } } else if (action == 7) {
+        System.out.print("Enter keyword to search: ");
+        String keyword = scanner.nextLine().toLowerCase();
+    
+        boolean found = false;
+        System.out.println("\n=== Search Results for: \"" + keyword + "\" ===");
+        for (Channel c : channels) {
+            for (Video v : c.getVideos()) {
+                if (v.getTitle().toLowerCase().contains(keyword) ||
+                    v.getDescription().toLowerCase().contains(keyword) ||
+                    c.getChannelName().toLowerCase().contains(keyword)) {
+    
+                    System.out.println("Title: " + v.getTitle());
+                    System.out.println("Description: " + v.getDescription());
+                    System.out.println("Channel: " + c.getChannelName());
+                    System.out.println("Duration: " + v.getDuration() + " seconds");
+                    System.out.println("Uploaded on: " + v.getDateUploaded());
+                    System.out.println("-----------");
+                    found = true;
+                }
+            }
+        }
+    
+        if (!found) {
+            System.out.println("No videos found matching your keyword.");
+        }
+    
             } else {
                 System.out.println("Invalid option. Try again.");
             } 
