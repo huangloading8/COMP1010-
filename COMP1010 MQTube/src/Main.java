@@ -11,6 +11,7 @@ public class Main {
         users.add(User.createAccount("alice", "alice@example.com", "pass123"));
         users.add(User.createAccount("bob", "bob@example.com", "bobpass"));
         users.add(User.createAccount("charlie", "charlie@example.com", "charliepw"));
+        users.add(User.createAccount("diana", "diana@example.com", "dianapass"));
 
         // Create and store predefined channels
         ArrayList<Channel> channels = new ArrayList<>();
@@ -67,7 +68,8 @@ public class Main {
             System.out.println(" 3. Upload Video");
             System.out.println(" 4. Delete Video");
             System.out.println(" 5. Edit Playlist");
-            System.out.println(" 6. Exit MqTube");
+            System.out.println(" 6. Edit Channel");
+            System.out.println(" 7. Exit MqTube");
 
             System.out.print("Enter the number for your action: ");
             String answer = scanner.nextLine();
@@ -89,31 +91,31 @@ public class Main {
             } else if (action == 2) {
                 System.out.println("Playlist feature not yet implemented.");
             } else if (action == 3) {
-                // Upload video
-                System.out.print("Enter channel name: ");
-                String channelName = scanner.nextLine();
-                System.out.print("Enter channel description: ");
-                String channelDesc = scanner.nextLine();
-                Channel newChannel = loggedInUser.createChannel(channelName, channelDesc);
-                channels.add(newChannel);
-
-                System.out.print("Enter video title: ");
-                String title = scanner.nextLine();
-                System.out.print("Enter video description: ");
-                String desc = scanner.nextLine();
-                System.out.print("Enter video duration in seconds: ");
-                int duration = Integer.parseInt(scanner.nextLine());
-                System.out.print("Enter today's date (YYYYMMDD): ");
-                int date = Integer.parseInt(scanner.nextLine());
-
-                int newId = newChannel.getVideos().size() + 1 + 100; // simple ID logic
-                Video newVideo = new Video(title, desc, duration, date, newChannel);
-                newChannel.uploadVideo(newVideo);
-
-               CSVUtils.appendVideoToCSV(newVideo); // added this: adds newly uploaded video to exisitng CSV 
-
-                System.out.println("Video uploaded.");
-
+                Channel userChannel = loggedInUser.getChannel();
+    
+                if (userChannel == null) {
+                    System.out.println("You need to create a channel before uploading a video.");
+                } else {
+                    System.out.print("Enter video title: ");
+                    String title = scanner.nextLine();
+            
+                    System.out.print("Enter video description: ");
+                    String desc = scanner.nextLine();
+            
+                    System.out.print("Enter video duration in seconds: ");
+                    int duration = Integer.parseInt(scanner.nextLine());
+            
+                    System.out.print("Enter today's date (YYYYMMDD): ");
+                    int date = Integer.parseInt(scanner.nextLine());
+            
+                    int newId = userChannel.getVideos().size() + 1 + 100; // simple ID logic
+                    Video newVideo = new Video(title, desc, duration, date, userChannel);
+                    userChannel.uploadVideo(newVideo);
+            
+                    CSVUtils.appendVideoToCSV(newVideo);
+            
+                    System.out.println("Video uploaded successfully with ID: " + newVideo.getId());
+                }
 
             } else if (action == 4) {
                 System.out.println("Enter the video ID to remove:");
@@ -135,12 +137,39 @@ public class Main {
                 }
             } else if (action == 5) {
                 System.out.println("Edit playlist feature not yet implemented.");
-            } else if (action == 6) {
+            } else if (action == 7) {
                 exit = true;
                 System.out.println("Goodbye from MqTube!");
+            } else if (action == 6){
+                // Check if user already has a channel
+    Channel userChannel = loggedInUser.getChannel();
+    if (userChannel == null) {
+        System.out.println("You don't have a channel yet. Let's create one.");
+        System.out.print("Enter channel name: ");
+        String newChannelName = scanner.nextLine();
+        System.out.print("Enter channel description: ");
+        String newChannelDesc = scanner.nextLine();
+        Channel newChannel = loggedInUser.createChannel(newChannelName, newChannelDesc);
+        channels.add(newChannel);
+        System.out.println("Channel created successfully.");
+    } else {
+        // Edit existing channel
+        System.out.println("Editing your channel: " + userChannel.getChannelName());
+        System.out.print("Enter new channel name (leave blank to keep current): ");
+        String newName = scanner.nextLine();
+        if (!newName.isEmpty()) {
+            userChannel.setChannelName(newName);
+        }
+        System.out.print("Enter new channel description (leave blank to keep current): ");
+        String newDesc = scanner.nextLine();
+        if (!newDesc.isEmpty()) {
+            userChannel.setDescription(newDesc);
+        }
+        System.out.println("Channel updated successfully.");
+    }
             } else {
                 System.out.println("Invalid option. Try again.");
-            }
+            } 
         }
 
         scanner.close();

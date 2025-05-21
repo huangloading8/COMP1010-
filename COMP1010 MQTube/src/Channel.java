@@ -15,6 +15,7 @@ public class Channel {
         this.videos = new ArrayList<>();
         this.playlists = new ArrayList<>();
     }
+    
 
     public void uploadVideo(Video video) {
         videos.add(video);
@@ -57,6 +58,15 @@ public class Channel {
     public String getChannelDescription() {
         return channelDescription;
     }
+    
+    public void setChannelName(String newName) {
+        this.channelName = newName;
+    }
+    
+    public void setDescription(String newDescription) {
+        this.channelDescription = newDescription;
+    }
+    
 
     public boolean removeVideo(int videoID) {
         for (int i = 0; i < videos.size(); i++) {
@@ -69,5 +79,7 @@ public class Channel {
         System.out.println("Video ID " + videoID + " not found.");
         return false;
     }
+
+    
 
 }

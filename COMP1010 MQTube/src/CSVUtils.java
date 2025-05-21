@@ -45,7 +45,7 @@ public class CSVUtils {
                 int date = Integer.parseInt(data[4]);
                 
                 // Add the video to the list
-                videos.add(new Video(title, description, duration, dateUploaded, channel));
+                videos.add(new Video(title, description, duration, date, channel));
             }
         } catch (IOException e) {
             e.printStackTrace();

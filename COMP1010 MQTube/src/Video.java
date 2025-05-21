@@ -78,4 +78,17 @@ public class Video {
                "\nLikes: " + likeCount +
                "\nComments: " + comments.size();
     }
+
+    public void setVideoID(int id) {
+        this.videoID = id;
+        // Also update nextId if necessary to avoid duplicates on future videos:
+        if (id >= nextId) {
+            nextId = id + 1;
+        }
+    }
+
+    public int getId() {
+        return this.videoID;
+    }
+
 }
