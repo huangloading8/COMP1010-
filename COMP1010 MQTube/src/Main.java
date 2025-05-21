@@ -149,62 +149,66 @@ public class Main {
             } else if (action == 8) {
                 exit = true;
                 System.out.println("Goodbye from MqTube!");
-            } else if (action == 6){
-                // Check if user already has a channel
-    Channel userChannel = loggedInUser.getChannel();
-    if (userChannel == null) {
-        System.out.println("You don't have a channel yet. Let's create one.");
-        System.out.print("Enter channel name: ");
-        String newChannelName = scanner.nextLine();
-        System.out.print("Enter channel description: ");
-        String newChannelDesc = scanner.nextLine();
-        Channel newChannel = loggedInUser.createChannel(newChannelName, newChannelDesc);
-        channels.add(newChannel);
-        System.out.println("Channel created successfully.");
-    } else {
-        // Edit existing channel
-        System.out.println("Editing your channel: " + userChannel.getChannelName());
-        System.out.print("Enter new channel name (leave blank to keep current): ");
-        String newName = scanner.nextLine();
-        if (!newName.isEmpty()) {
-            userChannel.setChannelName(newName);
-        }
-        System.out.print("Enter new channel description (leave blank to keep current): ");
-        String newDesc = scanner.nextLine();
-        if (!newDesc.isEmpty()) {
-            userChannel.setDescription(newDesc);
-        }
-        System.out.println("Channel updated successfully.");
-    } } else if (action == 7) {
-        System.out.print("Enter keyword to search: ");
-        String keyword = scanner.nextLine().toLowerCase();
-    
-        boolean found = false;
-        System.out.println("\n=== Search Results for: \"" + keyword + "\" ===");
-        for (Channel c : channels) {
-            for (Video v : c.getVideos()) {
-                if (v.getTitle().toLowerCase().contains(keyword) ||
-                    v.getDescription().toLowerCase().contains(keyword) ||
-                    c.getChannelName().toLowerCase().contains(keyword)) {
-    
-                    System.out.println("Title: " + v.getTitle());
-                    System.out.println("Description: " + v.getDescription());
-                    System.out.println("Channel: " + c.getChannelName());
-                    System.out.println("Duration: " + v.getDuration() + " seconds");
-                    System.out.println("Uploaded on: " + v.getDateUploaded());
-                    System.out.println("-----------");
-                    found = true;
+            } else if (action == 6) {
+                // Edit Channel (create or update)
+                Channel userChannel = loggedInUser.getChannel();
+                if (userChannel == null) {
+                    System.out.println("You don't have a channel yet. Let's create one.");
+                    System.out.print("Enter channel name: ");
+                    String newChannelName = scanner.nextLine();
+                    System.out.print("Enter channel description: ");
+                    String newChannelDesc = scanner.nextLine();
+                    Channel newChannel = loggedInUser.createChannel(newChannelName, newChannelDesc);
+                    channels.add(newChannel);
+                    System.out.println("Channel created successfully.");
+                } else {
+                    System.out.println("Editing your channel: " + userChannel.getChannelName());
+                    System.out.print("Enter new channel name (leave blank to keep current): ");
+                    String newName = scanner.nextLine();
+                    if (!newName.isEmpty()) {
+                        userChannel.setChannelName(newName);
+                    }
+                    System.out.print("Enter new channel description (leave blank to keep current): ");
+                    String newDesc = scanner.nextLine();
+                    if (!newDesc.isEmpty()) {
+                        userChannel.setDescription(newDesc);
+                    }
+                    System.out.println("Channel updated successfully.");
                 }
-            }
-        }
-    
-        if (!found) {
-            System.out.println("No videos found matching your keyword.");
-        }
-    
+            } else if (action == 7) {
+                // Search Videos
+                System.out.print("Enter keyword to search: ");
+                String keyword = scanner.nextLine().toLowerCase();
+        
+                boolean found = false;
+                System.out.println("\n=== Search Results for: \"" + keyword + "\" ===");
+                for (Channel c : channels) {
+                    for (Video v : c.getVideos()) {
+                        if (v.getTitle().toLowerCase().contains(keyword) ||
+                            v.getDescription().toLowerCase().contains(keyword) ||
+                            c.getChannelName().toLowerCase().contains(keyword)) {
+        
+                            System.out.println("Title: " + v.getTitle());
+                            System.out.println("Description: " + v.getDescription());
+                            System.out.println("Channel: " + c.getChannelName());
+                            System.out.println("Duration: " + v.getDuration() + " seconds");
+                            System.out.println("Uploaded on: " + v.getDateUploaded());
+                            System.out.println("-----------");
+                            found = true;
+                        }
+                    }
+                }
+        
+                if (!found) {
+                    System.out.println("No videos found matching your keyword.");
+                }
+            } else if (action == 8) {
+                // Exit
+                exit = true;
+                System.out.println("Goodbye from MqTube!");
             } else {
                 System.out.println("Invalid option. Try again.");
-            } 
+            }
         }
 
         scanner.close();
