@@ -1,4 +1,7 @@
 package src;
+
+import java.util.ArrayList;
+
 public class User {
     private String username;
     private String email;
@@ -45,4 +48,9 @@ public class User {
     public Channel createChannel(String channelName, String channelDescription) {
         return new Channel(channelName, this, channelDescription);
     }
+
+    public ArrayList<Playlist> playlists = new ArrayList<>();
+    public ArrayList<Playlist> getPlaylists() {
+        return playlists;
+}
 }

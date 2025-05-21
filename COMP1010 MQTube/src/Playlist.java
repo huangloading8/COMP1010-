@@ -13,6 +13,13 @@ public class Playlist {
         this.end = null;
     }
 
+    public String getPlaylistName (Playlist playlist){
+        return playlist.playlistName;
+    }
+    public String getPlaylistName() {
+        return playlistName;
+    }
+
     public void addVideo(Video video) {
         DNode newNode = new DNode(video);
         if (start == null) {
@@ -38,6 +45,9 @@ public class Playlist {
     dnode.setNext(null);
     }
     
-    
+    public DNode getStart() {
+    return start;
+}
+
 }
 
