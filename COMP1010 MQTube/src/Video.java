@@ -1,7 +1,10 @@
 package src;
+
 import java.util.ArrayList;
 
 public class Video {
+    private static int nextId = 1; // Static counter for generating unique video IDs
+
     private int videoID;
     private String title;
     private String description;
@@ -12,8 +15,9 @@ public class Video {
     private Channel channel;
     private ArrayList<Comment> comments;
 
-    public Video(int videoID, String title, String description, int duration, int dateUploaded, Channel channel) {
-        this.videoID = videoID;
+    // Constructor 
+    public Video(String title, String description, int duration, int dateUploaded, Channel channel) {
+        this.videoID = nextId++; // Assign and increment unique ID
         this.title = title;
         this.description = description;
         this.duration = duration;
@@ -74,5 +78,4 @@ public class Video {
                "\nLikes: " + likeCount +
                "\nComments: " + comments.size();
     }
-
 }

@@ -17,21 +17,21 @@ public class Main {
 
         // Predefined channels and educational videos
         Channel aliceChannel = users.get(0).createChannel("Alice's Code Corner", "Tutorials from a Macquarie IT student");
-        aliceChannel.uploadVideo(new Video(1, "Intro to Python Programming", "COMP1010 crash course for beginners", 600, 20250401, aliceChannel));
-        aliceChannel.uploadVideo(new Video(2, "Understanding Data Types in Java", "COMP1250 explained with examples", 540, 20250402, aliceChannel));
+        aliceChannel.uploadVideo(new Video("Intro to Python Programming", "COMP1010 crash course for beginners", 600, 20250401, aliceChannel));
+        aliceChannel.uploadVideo(new Video("Understanding Data Types in Java", "COMP1250 explained with examples", 540, 20250402, aliceChannel));
         channels.add(aliceChannel);
 
         Channel bobChannel = users.get(1).createChannel("Bob Learns Tech", "Documenting my journey through computing at Macquarie");
-        bobChannel.uploadVideo(new Video(3, "Data Science with R", "STAT1170 tips and tricks", 480, 20250403, bobChannel));
-        bobChannel.uploadVideo(new Video(4, "MySQL Basics", "COMP1350 – Writing your first queries", 420, 20250404, bobChannel));
+        bobChannel.uploadVideo(new Video("Data Science with R", "STAT1170 tips and tricks", 480, 20250403, bobChannel));
+        bobChannel.uploadVideo(new Video("MySQL Basics", "COMP1350 – Writing your first queries", 420, 20250404, bobChannel));
         channels.add(bobChannel);
 
         Channel charlieChannel = users.get(2).createChannel("Charlie Builds Stuff", "Web Dev, Projects, and Tutorials");
-        charlieChannel.uploadVideo(new Video(5, "Intro to Web Development", "COMP115 – HTML, CSS, and JS basics", 550, 20250405, charlieChannel));
-        charlieChannel.uploadVideo(new Video(6, "How to Use GitHub for Assignments", "Version control tips for COMP units", 360, 20250406, charlieChannel));
+        charlieChannel.uploadVideo(new Video("Intro to Web Development", "COMP115 – HTML, CSS, and JS basics", 550, 20250405, charlieChannel));
+        charlieChannel.uploadVideo(new Video("How to Use GitHub for Assignments", "Version control tips for COMP units", 360, 20250406, charlieChannel));
         channels.add(charlieChannel);
 
-        //CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
+      // CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
 
         // Login Feature
         System.out.println("=== Welcome to MqTube! ===");
@@ -107,10 +107,10 @@ public class Main {
                 int date = Integer.parseInt(scanner.nextLine());
 
                 int newId = newChannel.getVideos().size() + 1 + 100; // simple ID logic
-                Video newVideo = new Video(newId, title, desc, duration, date, newChannel);
+                Video newVideo = new Video(title, desc, duration, date, newChannel);
                 newChannel.uploadVideo(newVideo);
 
-                CSVUtils.appendVideoToCSV(newVideo); // added this: adds newly uploaded video to exisitng CSV 
+               CSVUtils.appendVideoToCSV(newVideo); // added this: adds newly uploaded video to exisitng CSV 
 
                 System.out.println("Video uploaded.");
 
