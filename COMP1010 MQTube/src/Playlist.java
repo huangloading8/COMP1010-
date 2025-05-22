@@ -20,7 +20,7 @@ public class Playlist {
         return playlistName;
     }
 
-    public void addVideo(Video video) {
+    public void addVideoToPlaylist(Video video) {
         DNode newNode = new DNode(video);
         if (start == null) {
             start = newNode;
@@ -31,7 +31,7 @@ public class Playlist {
         }
     }
 
-    public void removeVideo(DNode dnode) {
+    public void removeVideoFromPlaylist(DNode dnode) {
     if (dnode == null) {
         return;
     }

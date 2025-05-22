@@ -32,6 +32,9 @@ public class Main {
         charlieChannel.uploadVideo(new Video("How to Use GitHub for Assignments", "Version control tips for COMP units", 360, 20250406, charlieChannel));
         channels.add(charlieChannel);
 
+        // Predefined playlists & adding videos to playlists - example with aliceChannel
+        
+
       // CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
 
         // Login Feature
