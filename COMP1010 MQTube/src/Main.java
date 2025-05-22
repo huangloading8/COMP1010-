@@ -35,7 +35,7 @@ public class Main {
         // Predefined playlists & adding videos to playlists - example with aliceChannel
         
 
-      // CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
+      //CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
 
         // Login Feature
         System.out.println("=== Welcome to MqTube! ===");
