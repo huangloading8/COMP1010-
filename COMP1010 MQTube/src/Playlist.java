@@ -14,7 +14,7 @@ public class Playlist {
     }
 
     public String getPlaylistName (Playlist playlist){
-        return playlist.playlistName;
+        return playlistName;
     }
     public String getPlaylistName() {
         return playlistName;
@@ -24,6 +24,7 @@ public class Playlist {
         DNode newNode = new DNode(video);
         if (start == null) {
             start = newNode;
+            end = newNode;
         } else {
             end.setNext(newNode);
             newNode.setPrevious(end);
@@ -35,6 +36,10 @@ public class Playlist {
     if (dnode == null) {
         return;
     }
+
+    if (dnode == start) start = dnode.getNext();
+    if (dnode == end) end = dnode.getPrevious();
+
     if (dnode.getPrevious() != null) {
         dnode.getPrevious().setNext(dnode.getNext());
     }

@@ -21,6 +21,7 @@ public class MQTubeManager {
         users.add(User.createAccount("bob", "bob@example.com", "bobpass"));
         users.add(User.createAccount("charlie", "charlie@example.com", "charliepw"));
         users.add(User.createAccount("diana", "diana@example.com", "dianapass"));
+        users.add(User.createAccount("evelane", "evelane@example.com", "trixieissocool"));
 
         // Channels & videos
         Channel aliceChannel = users.get(0).createChannel("Alice's Code Corner", "Tutorials from a Macquarie IT student");
