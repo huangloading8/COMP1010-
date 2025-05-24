@@ -2,20 +2,15 @@ package src;
 
 public class Playlist {
     private String playlistName;
-    private User owner;
     private DNode start;
     private DNode end;
 
     public Playlist(String playlistName, User owner) {
         this.playlistName = playlistName;
-        this.owner = owner;
         this.start = null;
         this.end = null;
     }
 
-    public String getPlaylistName (Playlist playlist){
-        return playlistName;
-    }
     public String getPlaylistName() {
         return playlistName;
     }
@@ -37,7 +32,7 @@ public class Playlist {
         return;
     }
 
-    if (dnode == start) start = dnode.getNext();
+        if (dnode == start) start = dnode.getNext();
     if (dnode == end) end = dnode.getPrevious();
 
     if (dnode.getPrevious() != null) {

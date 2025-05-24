@@ -37,8 +37,6 @@ public class CSVUtils {
             // Read each line from the CSV file
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
-                // Parse video details from the CSV line
-                int id = Integer.parseInt(data[0]);
                 String title = data[1];
                 String description = data[2];
                 int duration = Integer.parseInt(data[3]);
