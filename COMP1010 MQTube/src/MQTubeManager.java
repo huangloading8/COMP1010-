@@ -38,6 +38,24 @@ public class MQTubeManager {
         charlieChannel.uploadVideo(new Video("Intro to Web Dev", "COMP115 – HTML, CSS", 550, 20250405, charlieChannel));
         charlieChannel.uploadVideo(new Video("GitHub for Assignments", "Version control tips", 360, 20250406, charlieChannel));
         channels.add(charlieChannel);
+
+        // Create & Add Videos to Playlists
+        // Alice's Playlist
+        aliceChannel.createPlaylist("Beginner Coding");
+        Playlist alicePlaylist = aliceChannel.getPlaylists().get(0);  // Get the newly created playlist
+        alicePlaylist.addVideoToPlaylist(aliceChannel.getVideos().get(0)); // Intro to Python
+        alicePlaylist.addVideoToPlaylist(aliceChannel.getVideos().get(1)); // Data Types in Java
+
+        // Bob's Playlist
+        bobChannel.createPlaylist("Bob's Favourites");
+        Playlist bobPlaylist = bobChannel.getPlaylists().get(0);
+        bobPlaylist.addVideoToPlaylist(bobChannel.getVideos().get(1)); // MySQL Basics
+
+        // Charlie's Playlist
+        charlieChannel.createPlaylist("Web Dev Essentials");
+        Playlist charliePlaylist = charlieChannel.getPlaylists().get(0);
+        charliePlaylist.addVideoToPlaylist(charlieChannel.getVideos().get(0)); // Intro to Web Dev
+        charliePlaylist.addVideoToPlaylist(charlieChannel.getVideos().get(1)); // GitHub for Assignments
     }
 
     public void run() {
@@ -61,7 +79,7 @@ public class MQTubeManager {
             } else if (action == 4) {
                 deleteVideo(loggedInUser);
             } else if (action == 5) {
-                System.out.println("Edit playlist feature not yet implemented.");
+                editPlaylist(loggedInUser);
             } else if (action == 6) {
                 editChannel(loggedInUser);
             } else if (action == 7) {
@@ -138,28 +156,47 @@ public class MQTubeManager {
     }
 
     private void viewPlaylists() {
-        System.out.println("\n===My Playlists===");
+        System.out.println("\n=== All MQTube Playlists ===");
+
         for (User u : users) {
             System.out.println("User: " + u.getUsername());
-            for (Channel c : channels) {
-                System.out.println("Channel: " + c.getChannelName());
-                for (Playlist p : u.getPlaylists()) {
-                    System.out.println("Playlist: " + p.getPlaylistName());
+
+            Channel channel = u.getChannel();
+            if (channel == null) {
+                System.out.println("  No channel.");
+                continue;
+            }
+
+            System.out.println("Channel: " + channel.getChannelName());
+            ArrayList<Playlist> playlists = channel.getPlaylists();
+
+            if (playlists.isEmpty()) {
+                System.out.println("  No playlists.");
+            } else {
+                for (Playlist p : playlists) {
+                    System.out.println("  Playlist: " + p.getPlaylistName());
+
                     DNode current = p.getStart();
+                    if (current == null) {
+                        System.out.println("    (Empty Playlist)");
+                    }
+
                     while (current != null) {
                         Video v = current.getVideo();
-                        System.out.println("  Title: " + v.getTitle());
-                        System.out.println("  Description: " + v.getDescription());
-                        System.out.println("  Channel: " + v.getChannel().getChannelName());
-                        System.out.println("  Duration: " + v.getDuration() + " seconds");
-                        System.out.println("  Uploaded on: " + v.getDateUploaded());
-                        System.out.println("  ---------");
+                        System.out.println("    Title: " + v.getTitle());
+                        System.out.println("    Description: " + v.getDescription());
+                        System.out.println("    Channel: " + v.getChannel().getChannelName());
+                        System.out.println("    Duration: " + v.getDuration() + " seconds");
+                        System.out.println("    Uploaded on: " + v.getDateUploaded());
+                        System.out.println("    ---------");
                         current = current.getNext();
                     }
                 }
             }
+            System.out.println(); // space between users
         }
     }
+
 
     private void uploadVideo(User loggedInUser) {
         Channel userChannel = loggedInUser.getChannel();
@@ -206,6 +243,132 @@ public class MQTubeManager {
 
         System.out.println("No video with ID " + videoID + " found in your channel.");
     }
+
+    private void editPlaylist(User loggedInUser) {
+        Channel userChannel = loggedInUser.getChannel();
+
+        if (userChannel == null) {
+            System.out.println("You need a channel before editing playlists.");
+            return;
+        }
+
+        ArrayList<Playlist> playlists = userChannel.getPlaylists();
+
+        System.out.println("\n=== Playlist Menu ===");
+        System.out.println("1. View Playlists");
+        System.out.println("2. Add Video to Playlist");
+        System.out.println("3. Remove Video from Playlist");
+        System.out.print("Enter your option (1/2/3): ");
+        int option = Integer.parseInt(scanner.nextLine());
+
+        if (option == 1) {
+            System.out.println("\n--- View Playlists ---");
+            if (playlists.isEmpty()) {
+            System.out.println("There are no playlists.");
+            } else {
+                for (int i = 0; i < playlists.size(); i++) {
+                    System.out.println((i + 1) + ". " + playlists.get(i).getPlaylistName());
+                }
+            }
+        } 
+    
+        else if (option == 2) {
+            if (playlists.isEmpty()) {
+                System.out.println("There is no playlist.");
+                return;
+            }
+            System.out.println("\n--- Add Video to Playlist ---");
+            // Show playlist choices
+            System.out.println("Select a playlist by number:");
+            for (int i = 0; i < playlists.size(); i++) {
+                System.out.println((i + 1) + ". " + playlists.get(i).getPlaylistName());
+            }
+            System.out.print("Enter your choice: ");
+            int choice = Integer.parseInt(scanner.nextLine());
+
+            if (choice < 1 || choice > playlists.size()) {
+                System.out.println("Invalid playlist choice.");
+                return;
+            }
+            Playlist target = playlists.get(choice - 1);
+
+            System.out.println("Available videos in your channel:");
+            for (Video v : userChannel.getVideos()) {
+                System.out.println("[" + v.getId() + "] " + v.getTitle());
+            }
+
+            System.out.print("Enter Video ID to add: ");
+            int videoID = Integer.parseInt(scanner.nextLine());
+            Video video = userChannel.getVideoById(videoID);
+
+            if (video != null) {
+                target.addVideoToPlaylist(video);
+                System.out.println("Video added to playlist.");
+            } else {
+                System.out.println("Invalid video ID.");
+            }
+        } 
+    
+        else if (option == 3) {
+            if (playlists.isEmpty()) {
+                System.out.println("There is no playlist.");
+                return;
+            }
+            System.out.println("\n--- Remove Video from Playlist ---");
+            // Show playlist choices
+            System.out.println("Select a playlist by number:");
+            for (int i = 0; i < playlists.size(); i++) {
+                System.out.println((i + 1) + ". " + playlists.get(i).getPlaylistName());
+            }
+            System.out.print("Enter your choice: ");
+            int choice = Integer.parseInt(scanner.nextLine());
+
+            if (choice < 1 || choice > playlists.size()) {
+                System.out.println("Invalid playlist choice.");
+                return;
+            }
+            Playlist target = playlists.get(choice - 1);
+
+            DNode current = target.getStart();
+            System.out.println("Videos in this playlist:");
+            if (current == null) {
+                System.out.println("Playlist is empty.");
+                return;
+            }
+            while (current != null) {
+                Video v = current.getVideo();
+                System.out.println("[" + v.getId() + "] " + v.getTitle());
+                current = current.getNext();
+            }
+
+            System.out.print("Enter Video ID to remove: ");
+            int videoID = Integer.parseInt(scanner.nextLine());
+
+            // Find DNode with this video ID
+            current = target.getStart();
+            DNode toRemove = null;
+            while (current != null) {
+                if (current.getVideo().getId() == videoID) {
+                    toRemove = current;
+                    break;
+                }
+                current = current.getNext();
+            }
+
+            if (toRemove != null) {
+                target.removeVideoFromPlaylist(toRemove);
+                System.out.println("Video removed from playlist.");
+            } else {
+                System.out.println("Video ID not found in playlist.");
+            }
+        } 
+    
+        else {
+            System.out.println("Invalid option. Please enter 1, 2, or 3.");
+        }
+    }
+
+
 
     private void editChannel(User loggedInUser) {
         Channel userChannel = loggedInUser.getChannel();
@@ -260,3 +423,4 @@ public class MQTubeManager {
         }
     }
 }
+

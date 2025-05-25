@@ -23,6 +23,10 @@ public class Channel {
     }
 
     public void createPlaylist(String name) {
+        if (playlists.size() >= 5) {
+            System.out.println("Cannot create more than 5 playlists.");
+            return;
+        }
         playlists.add(new Playlist(name, owner));
         System.out.println("Playlist \"" + name + "\" created.");
     }

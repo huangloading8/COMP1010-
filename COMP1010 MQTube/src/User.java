@@ -64,6 +64,11 @@ public class User {
     }
 
     public ArrayList<Playlist> playlists = new ArrayList<>();
+    public Playlist createPlaylist(String playlistName) {
+    Playlist newPlaylist = new Playlist(playlistName, this);
+    playlists.add(newPlaylist);
+    return newPlaylist;
+}
     public ArrayList<Playlist> getPlaylists() {
         return playlists;
 }
