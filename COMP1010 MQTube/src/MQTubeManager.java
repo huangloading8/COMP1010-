@@ -1,7 +1,12 @@
 package src;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 
 public class MQTubeManager {
     private ArrayList<User> users;
@@ -12,6 +17,8 @@ public class MQTubeManager {
         users = new ArrayList<>();
         channels = new ArrayList<>();
         scanner = new Scanner(System.in);
+
+        loadUsersFromCSV(); 
         initializeData();
     }
 
@@ -58,6 +65,34 @@ public class MQTubeManager {
         charliePlaylist.addVideoToPlaylist(charlieChannel.getVideos().get(1)); // GitHub for Assignments
     }
 
+    private void loadUsersFromCSV() {
+    String csvFile = "users.csv";
+    String line;
+    String csvSplitBy = ",";
+
+    try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+        // Skip the header line
+        br.readLine();
+
+        while ((line = br.readLine()) != null) {
+            String[] userData = line.split(csvSplitBy);
+            if (userData.length == 3) {
+                String username = userData[0].trim();
+                String email = userData[1].trim();
+                String password = userData[2].trim();
+                
+                // Create user and add to list
+                User user = User.createAccount(username, email, password);
+                users.add(user);
+            }
+        }
+    } catch (IOException e) {
+        System.out.println("Error reading users from CSV: " + e.getMessage());
+    }
+}
+        // Login Feature
+       //CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
+
     public void run() {
         System.out.println("=== Welcome to MqTube! ===");
         System.out.println("Please log in with your username or email.");
@@ -95,10 +130,19 @@ public class MQTubeManager {
         scanner.close();
     }
 
-    private User login() {
-        User loggedInUser = null;
+    
+  private User login() {
+    User loggedInUser = null;
 
-        while (loggedInUser == null) {
+    while (loggedInUser == null) {
+        System.out.println("Welcome to MQTube!");
+        System.out.println("[1] Log In");
+        System.out.println("[2] Sign Up");
+        System.out.print("Choose an option: ");
+        String choice = scanner.nextLine().trim();
+
+        if (choice.equals("1")) {
+            // Login flow
             System.out.print("Enter username or email: ");
             String identifier = scanner.nextLine();
             System.out.print("Enter password: ");
@@ -114,10 +158,53 @@ public class MQTubeManager {
             if (loggedInUser == null) {
                 System.out.println("Login failed. Please try again.\n");
             }
-        }
 
-        return loggedInUser;
+        } else if (choice.equals("2")) {
+            // Sign up flow
+            System.out.print("Enter new username: ");
+            String username = scanner.nextLine();
+
+            System.out.print("Enter email: ");
+            String email = scanner.nextLine();
+
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+
+            // Optional: Check if username or email is already taken
+            boolean exists = false;
+            for (User user : users) {
+                if (user.getUsername().equalsIgnoreCase(username) || user.getEmail().equalsIgnoreCase(email)) {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (exists) {
+                System.out.println("Username or email already exists. Please try again.\n");
+            } else {
+                loggedInUser = User.createAccount(username, email, password);
+                users.add(loggedInUser);
+                saveUserToCSV(loggedInUser); 
+                System.out.println("Account created successfully. You are now logged in as " + username + "!\n");
+            }
+
+        } else {
+            System.out.println("Invalid option. Please enter 1 or 2.\n");
+        }
     }
+
+    return loggedInUser;
+}
+
+private void saveUserToCSV(User user) {
+    try (FileWriter writer = new FileWriter("users.csv", true)) { // true = append mode
+        String line = String.format("%s,%s,%s\n", user.getUsername(), user.getEmail(), user.getPassword());
+        writer.write(line);
+    } catch (IOException e) {
+        System.out.println("Error saving user to file: " + e.getMessage());
+    }
+}
+
 
     private void showMenu() {
         System.out.println("\nWhat would you like to do?");
@@ -328,8 +415,8 @@ public class MQTubeManager {
                 return;
             }
             Playlist target = playlists.get(choice - 1);
-
             DNode current = target.getStart();
+            
             System.out.println("Videos in this playlist:");
             if (current == null) {
                 System.out.println("Playlist is empty.");

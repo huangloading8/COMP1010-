@@ -72,4 +72,9 @@ public class User {
     public ArrayList<Playlist> getPlaylists() {
         return playlists;
 }
+
+public String getPassword() {
+    return password;
+}
+
 }
