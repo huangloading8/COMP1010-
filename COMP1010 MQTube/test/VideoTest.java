@@ -1,10 +1,10 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
+import org.junit.*;
+import static org.junit.Assert.*;
 
 import src.Channel;
-import src.User;
+
 import src.Video;
 
 public class VideoTest {
@@ -31,7 +31,7 @@ public class VideoTest {
                 "\nDescription: " + testVideo.getDescription() +
                 "\nDuration: " + testVideo.getDuration() + " seconds" +
                 "\nUploaded on: " + testVideo.getDateUploaded() +
-                "\nChannel: " + testVideo.getChannel().getChannelName() +
+                "\nChannel: " + testChannel.getChannelName() +
                 "\nViews: " + testVideo.getViewCount() +
                 "\nLikes: " + testVideo.getLikeCount() +
                 "\nComments: " + testVideo.getComments().size();
