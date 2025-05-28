@@ -1,4 +1,5 @@
 package src;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -54,6 +55,7 @@ public class CSVUtils {
     
     // Method to export all videos of all channels to CSV (Optional)
     public static void exportAllVideosToCSV(ArrayList<Channel> channels) {
+        
         for (Channel channel : channels) {
             // Use the channel owner's username for the file name
             String filename = channel.getOwner().getUsername() + "_videos.csv";
@@ -75,6 +77,7 @@ public class CSVUtils {
                 e.printStackTrace();
             }
         }
+
     }
 
      // Method to remove videos from the user's CSV file
@@ -109,5 +112,4 @@ public class CSVUtils {
             System.err.println("Could not rename temp file.");
         }
     }
-    
 }

@@ -29,5 +29,4 @@ public class DNode {
     public void setPrevious(DNode previous) {
         this.previous = previous;
     }
-
 }

@@ -28,26 +28,30 @@ public class Playlist {
     }
 
     public void removeVideoFromPlaylist(DNode dnode) {
-    if (dnode == null) {
-        return;
-    }
+        if (dnode == null) {
+            return;
+        }
 
-        if (dnode == start) start = dnode.getNext();
-    if (dnode == end) end = dnode.getPrevious();
+        if (dnode == start) {
+            start = dnode.getNext();
+        }
+        if (dnode == end) {
+            end = dnode.getPrevious();
+        }
 
-    if (dnode.getPrevious() != null) {
-        dnode.getPrevious().setNext(dnode.getNext());
-    }
-    if (dnode.getNext() != null) {
-        dnode.getNext().setPrevious(dnode.getPrevious());
-    }
-    dnode.setPrevious(null);
-    dnode.setNext(null);
+        if (dnode.getPrevious() != null) {
+            dnode.getPrevious().setNext(dnode.getNext());
+        }
+        if (dnode.getNext() != null) {
+            dnode.getNext().setPrevious(dnode.getPrevious());
+        }
+
+        dnode.setPrevious(null);
+        dnode.setNext(null);
     }
     
     public DNode getStart() {
-    return start;
-}
-
+        return start;
+    }
 }
 

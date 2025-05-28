@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Video {
     private static int nextId = 1; // Static counter for generating unique video IDs
-
     private int videoID;
     private String title;
     private String description;
@@ -88,10 +87,7 @@ public class Video {
         }
     }
 
-    
-
     public int getId() {
         return this.videoID;
     }
-
 }

@@ -59,22 +59,24 @@ public class User {
     public Channel getChannel() {
         return this.channel;
     }
+    
     public boolean hasChannel() {
         return this.channel != null;
     }
 
     public ArrayList<Playlist> playlists = new ArrayList<>();
+
     public Playlist createPlaylist(String playlistName) {
     Playlist newPlaylist = new Playlist(playlistName, this);
     playlists.add(newPlaylist);
     return newPlaylist;
-}
+    }
+
     public ArrayList<Playlist> getPlaylists() {
         return playlists;
-}
+    }
 
-public String getPassword() {
-    return password;
-}
-
+    public String getPassword() {
+        return password;
+    }
 }
