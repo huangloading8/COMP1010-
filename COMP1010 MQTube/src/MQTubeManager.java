@@ -66,30 +66,28 @@ public class MQTubeManager {
     }
 
     private void loadUsersFromCSV() {
-    String csvFile = "users.csv";
-    String line;
-    String csvSplitBy = ",";
+        String csvFile = "users.csv";
+        String line;
+        String csvSplitBy = ",";
 
-    try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-        // Skip the header line
-        br.readLine();
-
-        while ((line = br.readLine()) != null) {
-            String[] userData = line.split(csvSplitBy);
-            if (userData.length == 3) {
-                String username = userData[0].trim();
-                String email = userData[1].trim();
-                String password = userData[2].trim();
-                
-                // Create user and add to list
-                User user = User.createAccount(username, email, password);
-                users.add(user);
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            // Skip the header line
+            br.readLine();
+            while ((line = br.readLine()) != null) {
+                String[] userData = line.split(csvSplitBy);
+                if (userData.length == 3) {
+                    String username = userData[0].trim();
+                    String email = userData[1].trim();
+                    String password = userData[2].trim();
+                    // Create user and add to list
+                    User user = User.createAccount(username, email, password);
+                    users.add(user);
+                }
             }
+        } catch (IOException e) {
+            System.out.println("Error reading users from CSV: " + e.getMessage());
         }
-    } catch (IOException e) {
-        System.out.println("Error reading users from CSV: " + e.getMessage());
     }
-}
         // Login Feature
        //CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
 
@@ -131,79 +129,80 @@ public class MQTubeManager {
     }
 
     
-  private User login() {
-    User loggedInUser = null;
+    private User login() {
+        User loggedInUser = null;
 
-    while (loggedInUser == null) {
-        System.out.println("Welcome to MQTube!");
-        System.out.println("[1] Log In");
-        System.out.println("[2] Sign Up");
-        System.out.print("Choose an option: ");
-        String choice = scanner.nextLine().trim();
+        while (loggedInUser == null) {
+            System.out.println("Welcome to MQTube!");
+            System.out.println("[1] Log In");
+            System.out.println("[2] Sign Up");
+            System.out.print("Choose an option: ");
+            String choice = scanner.nextLine().trim();
 
-        if (choice.equals("1")) {
-            // Login flow
-            System.out.print("Enter username or email: ");
-            String identifier = scanner.nextLine();
-            System.out.print("Enter password: ");
-            String password = scanner.nextLine();
+            if (choice.equals("1")) {
+                // Login flow
+                System.out.print("Enter username or email: ");
+                String identifier = scanner.nextLine();
+                System.out.print("Enter password: ");
+                String password = scanner.nextLine();
 
-            for (User user : users) {
-                if (user.login(identifier, password)) {
-                    loggedInUser = user;
-                    break;
+                for (User user : users) {
+                    if (user.login(identifier, password)) {
+                        loggedInUser = user;
+                        break;
+                    }
                 }
-            }
 
-            if (loggedInUser == null) {
-                System.out.println("Login failed. Please try again.\n");
-            }
-
-        } else if (choice.equals("2")) {
-            // Sign up flow
-            System.out.print("Enter new username: ");
-            String username = scanner.nextLine();
-
-            System.out.print("Enter email: ");
-            String email = scanner.nextLine();
-
-            System.out.print("Enter password: ");
-            String password = scanner.nextLine();
-
-            // Optional: Check if username or email is already taken
-            boolean exists = false;
-            for (User user : users) {
-                if (user.getUsername().equalsIgnoreCase(username) || user.getEmail().equalsIgnoreCase(email)) {
-                    exists = true;
-                    break;
+                if (loggedInUser == null) {
+                    System.out.println("Login failed. Please try again.\n");
                 }
-            }
 
-            if (exists) {
-                System.out.println("Username or email already exists. Please try again.\n");
+            } else if (choice.equals("2")) {
+                // Sign up flow
+                System.out.print("Enter new username: ");
+                String username = scanner.nextLine();
+
+                System.out.print("Enter email: ");
+                String email = scanner.nextLine();
+
+                System.out.print("Enter password: ");
+                String password = scanner.nextLine();
+
+                // Optional: Check if username or email is already taken
+                boolean exists = false;
+                for (User user : users) {
+                    if (user.getUsername().equalsIgnoreCase(username) || 
+                        user.getEmail().equalsIgnoreCase(email)) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (exists) {
+                    System.out.println("Username or email already exists. Please try again.\n");
+                } else {
+                    loggedInUser = User.createAccount(username, email, password);
+                    users.add(loggedInUser);
+                    saveUserToCSV(loggedInUser); 
+                    System.out.println("Account created successfully. You are now logged in as " + username + "!\n");
+                }
+
             } else {
-                loggedInUser = User.createAccount(username, email, password);
-                users.add(loggedInUser);
-                saveUserToCSV(loggedInUser); 
-                System.out.println("Account created successfully. You are now logged in as " + username + "!\n");
+                System.out.println("Invalid option. Please enter 1 or 2.\n");
             }
+        }
 
-        } else {
-            System.out.println("Invalid option. Please enter 1 or 2.\n");
+        return loggedInUser;
+    }
+
+    private void saveUserToCSV(User user) {
+        try (FileWriter writer = new FileWriter("users.csv", true)) { // true = append mode
+            String line = String.format("%s,%s,%s\n", user.getUsername(), user.getEmail(), user.getPassword());
+            writer.write(line);
+        } catch (IOException e) {
+            System.out.println("Error saving user to file: " + e.getMessage());
         }
     }
-
-    return loggedInUser;
-}
-
-private void saveUserToCSV(User user) {
-    try (FileWriter writer = new FileWriter("users.csv", true)) { // true = append mode
-        String line = String.format("%s,%s,%s\n", user.getUsername(), user.getEmail(), user.getPassword());
-        writer.write(line);
-    } catch (IOException e) {
-        System.out.println("Error saving user to file: " + e.getMessage());
-    }
-}
 
 
     private void showMenu() {
@@ -357,9 +356,7 @@ private void saveUserToCSV(User user) {
                     System.out.println((i + 1) + ". " + playlists.get(i).getPlaylistName());
                 }
             }
-        } 
-    
-        else if (option == 2) {
+        } else if (option == 2) {
             if (playlists.isEmpty()) {
                 System.out.println("There is no playlist.");
                 return;
@@ -367,9 +364,11 @@ private void saveUserToCSV(User user) {
             System.out.println("\n--- Add Video to Playlist ---");
             // Show playlist choices
             System.out.println("Select a playlist by number:");
+
             for (int i = 0; i < playlists.size(); i++) {
                 System.out.println((i + 1) + ". " + playlists.get(i).getPlaylistName());
             }
+
             System.out.print("Enter your choice: ");
             int choice = Integer.parseInt(scanner.nextLine());
 
@@ -394,9 +393,7 @@ private void saveUserToCSV(User user) {
             } else {
                 System.out.println("Invalid video ID.");
             }
-        } 
-    
-        else if (option == 3) {
+        } else if (option == 3) {
             if (playlists.isEmpty()) {
                 System.out.println("There is no playlist.");
                 return;
@@ -404,9 +401,11 @@ private void saveUserToCSV(User user) {
             System.out.println("\n--- Remove Video from Playlist ---");
             // Show playlist choices
             System.out.println("Select a playlist by number:");
+
             for (int i = 0; i < playlists.size(); i++) {
                 System.out.println((i + 1) + ". " + playlists.get(i).getPlaylistName());
             }
+
             System.out.print("Enter your choice: ");
             int choice = Integer.parseInt(scanner.nextLine());
 
@@ -422,6 +421,7 @@ private void saveUserToCSV(User user) {
                 System.out.println("Playlist is empty.");
                 return;
             }
+
             while (current != null) {
                 Video v = current.getVideo();
                 System.out.println("[" + v.getId() + "] " + v.getTitle());
@@ -448,9 +448,7 @@ private void saveUserToCSV(User user) {
             } else {
                 System.out.println("Video ID not found in playlist.");
             }
-        } 
-    
-        else {
+        } else {
             System.out.println("Invalid option. Please enter 1, 2, or 3.");
         }
     }
@@ -459,6 +457,7 @@ private void saveUserToCSV(User user) {
 
     private void editChannel(User loggedInUser) {
         Channel userChannel = loggedInUser.getChannel();
+
         if (userChannel == null) {
             System.out.println("You don't have a channel yet. Let's create one.");
             System.out.print("Enter channel name: ");
@@ -472,12 +471,16 @@ private void saveUserToCSV(User user) {
             System.out.println("Editing your channel: " + userChannel.getChannelName());
             System.out.print("Enter new channel name (leave blank to keep current): ");
             String newName = scanner.nextLine();
-            if (!newName.isEmpty()) userChannel.setChannelName(newName);
+            if (!newName.isEmpty()) {
+                userChannel.setChannelName(newName);
+            }
 
             System.out.print("Enter new channel description (leave blank to keep current): ");
             String newDesc = scanner.nextLine();
-            if (!newDesc.isEmpty()) userChannel.setDescription(newDesc);
-
+            if (!newDesc.isEmpty()) {
+                userChannel.setDescription(newDesc);
+            }
+            
             System.out.println("Channel updated successfully.");
         }
     }
