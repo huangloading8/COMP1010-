@@ -1,5 +1,6 @@
 package src;
 
+// This class represents comments made by user
 public class Comment {
     private String commentID;
     private String username;
@@ -8,6 +9,7 @@ public class Comment {
     private int datePosted;
     private Video video;
 
+    // This is a Comment constructor with all required elements of a comment
     public Comment(String commentID, String username, String email, String content, int datePosted, Video video) {
         this.commentID = commentID;
         this.username = username;

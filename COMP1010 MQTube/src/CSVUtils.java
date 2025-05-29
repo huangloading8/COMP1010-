@@ -55,7 +55,6 @@ public class CSVUtils {
     
     // Method to export all videos of all channels to CSV (Optional)
     public static void exportAllVideosToCSV(ArrayList<Channel> channels) {
-        
         for (Channel channel : channels) {
             // Use the channel owner's username for the file name
             String filename = channel.getOwner().getUsername() + "_videos.csv";
@@ -63,6 +62,7 @@ public class CSVUtils {
             try (FileWriter writer = new FileWriter(filename)) {
                 // Write header row in the CSV
                 writer.append("VideoID,Title,Description,Duration,DateUploaded,ChannelName\n");
+
                 // Iterate through each video in the channel
                 for (Video video : channel.getVideos()) {
                     writer.append(video.getVideoID() + ",");
@@ -73,6 +73,7 @@ public class CSVUtils {
                     writer.append(video.getChannel().getChannelName());
                     writer.append("\n");
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

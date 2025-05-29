@@ -2,6 +2,11 @@ package src;
 
 import java.util.ArrayList;
 
+/*
+ * This class represents a video uploaded to a channel
+ * It contains methods to operate on video objects in a channel
+ */
+
 public class Video {
     private static int nextId = 1; // Static counter for generating unique video IDs
     private int videoID;
@@ -14,7 +19,7 @@ public class Video {
     private Channel channel;
     private ArrayList<Comment> comments;
 
-    // Constructor 
+    // This is the Video constructor with all of the required information about a video
     public Video(String title, String description, int duration, int dateUploaded, Channel channel) {
         this.videoID = nextId++; // Assign and increment unique ID
         this.title = title;
@@ -67,6 +72,7 @@ public class Video {
         return comments;
     }
 
+    // This method returns the information about a video
     public String getVideoInfo() {
         return "Video ID: " + videoID +
                 "\nTitle: " + title +
@@ -78,7 +84,12 @@ public class Video {
                 "\nLikes: " + likeCount +
                 "\nComments: " + comments.size();
     }
-
+    /*
+     * This method manually sets the video ID.
+     * It also updates the static ID counter if necessary to avoid duplicates.
+     *
+     * @param id the new video ID
+     */
     public void setVideoID(int id) {
         this.videoID = id;
         // Also update nextId if necessary to avoid duplicates on future videos:

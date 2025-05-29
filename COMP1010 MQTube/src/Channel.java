@@ -2,6 +2,11 @@ package src;
 
 import java.util.ArrayList;
 
+/*
+ *This class represents a channel owned by a user.
+ *It contans methods for uploading videos and managing playlists.
+ */
+
 public class Channel {
     private String channelName;
     private User owner;
@@ -9,6 +14,7 @@ public class Channel {
     private ArrayList<Video> videos;
     private ArrayList<Playlist> playlists;
 
+    // This is a Channel constructor with all required information about a channel
     public Channel(String channelName, User owner, String channelDescription) {
         this.channelName = channelName;
         this.owner = owner;
@@ -16,13 +22,14 @@ public class Channel {
         this.videos = new ArrayList<>();
         this.playlists = new ArrayList<>();
     }
-    
 
+    // Method for adding a video to a channel and prints a confirmation message.
     public void uploadVideo(Video video) {
         videos.add(video);
         System.out.println("Video \"" + video.getTitle() + "\" uploaded to channel: " + channelName); // upload successful message
     }
 
+    // Method for creating a playlist for a channel (limiting to 5 playlists per channel)
     public void createPlaylist(String name) {
         if (playlists.size() >= 5) {
             System.out.println("Cannot create more than 5 playlists.");
@@ -32,6 +39,7 @@ public class Channel {
         System.out.println("Playlist \"" + name + "\" created.");
     }
 
+    // Method for delete a playlist from a channel
     public boolean removePlaylist(String name) {
 
         for (int i = 0; i < playlists.size(); i++) {
@@ -74,6 +82,7 @@ public class Channel {
         this.channelDescription = newDescription;
     }
 
+    // Method for removing a video from a playlist, using the video ID
     public boolean removeVideo(int videoID) {
 
         for (int i = 0; i < videos.size(); i++) {
@@ -90,6 +99,7 @@ public class Channel {
         return false;
     }
     
+    // Method to get a video by searching through the video ID
     public Video getVideoById(int id) {
         for (Video v : videos) {
             if (v.getVideoID() == id) {
