@@ -39,21 +39,22 @@ class Test_User {
         assertFalse(testUser.login("TEST@EXAMPLE.COM", "password"));
 }
 
-    @Test
+   @Test
     void testCreateChannel() {
         Channel channel = testUser.createChannel("Test Channel", "Test Description");
-        
+
         assertNotNull(channel);
         assertEquals("Test Channel", channel.getChannelName());
         assertEquals(testUser, channel.getOwner());
         assertEquals("Test Description", channel.getChannelDescription());
-        
-        // Verify the user's channel reference is set
         assertEquals(channel, testUser.getChannel());
-        
-        // Test creating second channel (should not be allowed)
+
+        // Try to create another channel
         Channel channel2 = testUser.createChannel("Second Channel", "Second Desc");
-        assertEquals(channel, testUser.getChannel()); // Should still reference first channel
+        
+        // Should still be the same channel object
+        assertSame(channel, channel2);
+        assertEquals(channel, testUser.getChannel());
     }
 
     @Test
