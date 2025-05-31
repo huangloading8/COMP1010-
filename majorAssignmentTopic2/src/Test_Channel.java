@@ -1,11 +1,7 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
-
-
 
 public class Test_Channel {
 
@@ -14,13 +10,13 @@ public class Test_Channel {
 
     @BeforeEach
     public void setUp() {
-        user = new User("alice");
+        user = new User("alice", "alice@students.mq.edu.au", "pass123");
         channel = new Channel("Alice's Channel", user, "Fun and Learning");
     }
 
     @Test
     public void testUploadVideo() {
-        Video video = new Video(1, "Intro Video");
+        Video video = new Video("Intro Video", "Intro Description", 300, 20250601, channel);
         channel.uploadVideo(video);
 
         ArrayList<Video> videos = channel.getVideos();
@@ -64,10 +60,10 @@ public class Test_Channel {
 
     @Test
     public void testRemoveVideo_Success() {
-        Video video = new Video(101, "Cool Video");
+        Video video = new Video("Cool Video", "Nice video", 300, 20250601, channel);
         channel.uploadVideo(video);
 
-        boolean removed = channel.removeVideo(101);
+        boolean removed = channel.removeVideo(video.getId());
         assertTrue(removed);
         assertEquals(0, channel.getVideos().size());
     }
