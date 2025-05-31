@@ -156,7 +156,9 @@ public class MQTubeManager {
             System.out.println("Welcome to MQTube!");
             System.out.println("[1] Log In");
             System.out.println("[2] Sign Up");
+            System.out.println("[3] Exit MQTube");
             System.out.print("Choose an option: ");
+
             String choice = scanner.nextLine().trim();
 
             if (choice.equals("1")) {
@@ -213,10 +215,13 @@ public class MQTubeManager {
                     System.out.println("Account created successfully. You are now logged in as " + username + "!\n");
                 }
 
-            } else {
-                System.out.println("Invalid option. Please enter 1 or 2.\n");
-            }
-        }
+                } else if (choice.equals("3")) {
+                    System.out.println("Goodbye from MQTube!");
+                    System.exit(0); // exits the entire program
+                } else {
+                    System.out.println("Invalid option. Please enter 1, 2, or 3.\n");
+                }
+                        }
 
         return loggedInUser;
     }
