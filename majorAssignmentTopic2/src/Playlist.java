@@ -1,5 +1,3 @@
-package src;
-
 /*
  * This class represents a playlist consisting of videos linked in a doubly linked list.
  * It contains methods to edit playlists, such as removing or adding video to playlists.

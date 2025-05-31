@@ -1,17 +1,18 @@
-package test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import src.User;
-
-class UserTest {
+public class UserTest {
     private User testUser;
 
-
+    @BeforeEach
+    public void setUp() {
+        testUser = new User("testuser", "password", "test@example.com");
+    }
 
     @Test
-    void testUserCreation() {
+    public void testUserCreation() {
         assertNotNull(testUser);
         assertEquals("testuser", testUser.getUsername());
         assertEquals("test@example.com", testUser.getEmail());
@@ -19,31 +20,21 @@ class UserTest {
     }
 
     @Test
-    void testLogin() {
-        // Test with username
+    public void testLogin() {
         assertTrue(testUser.login("testuser", "password"));
-        
-        // Test with email
         assertTrue(testUser.login("test@example.com", "password"));
-        
-        // Test wrong credentials
         assertFalse(testUser.login("testuser", "wrongpassword"));
         assertFalse(testUser.login("wronguser", "password"));
     }
 
     @Test
-    void testCreateChannel() {
+    public void testCreateChannel() {
         Channel channel = testUser.createChannel("Test Channel", "Test Description");
-        
+
         assertNotNull(channel);
         assertEquals("Test Channel", channel.getChannelName());
-        assertEquals(testUser, channel.getOwner());
         assertEquals("Test Description", channel.getChannelDescription());
-        
-        // Verify the user's channel reference is set
+        assertEquals(testUser, channel.getOwner());
         assertEquals(channel, testUser.getChannel());
-        
     }
-
-
 }
