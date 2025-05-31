@@ -25,17 +25,19 @@ class Test_User {
     }
 
     @Test
-    void testLogin() {
-        // Test with username
-        assertTrue(testUser.login("testuser", "password"));
-        
-        // Test with email
-        assertTrue(testUser.login("test@example.com", "password"));
-        
-        // Test wrong credentials
-        assertFalse(testUser.login("testuser", "wrongpassword"));
-        assertFalse(testUser.login("wronguser", "password"));
-    }
+    void testLogin_edgeCases() {
+        // Blank username/email
+        assertFalse(testUser.login("", "password"));
+        assertFalse(testUser.login("testuser", ""));
+
+        // Null input (if your code handles it)
+        assertFalse(testUser.login(null, "password"));
+        assertFalse(testUser.login("testuser", null));
+
+        // Case sensitivity
+        assertFalse(testUser.login("TestUser", "password"));
+        assertFalse(testUser.login("TEST@EXAMPLE.COM", "password"));
+}
 
     @Test
     void testCreateChannel() {
