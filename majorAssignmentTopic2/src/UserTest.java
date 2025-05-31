@@ -1,18 +1,19 @@
+package src;
+
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-public class UserTest {
+class UserTest {
     private User testUser;
 
     @BeforeEach
-    public void setUp() {
-        testUser = new User("testuser", "password", "test@example.com");
+    void setUp() {
+        testUser = new User("testuser", "test@example.com", "password");
     }
 
     @Test
-    public void testUserCreation() {
+    void testUserCreation() {
         assertNotNull(testUser);
         assertEquals("testuser", testUser.getUsername());
         assertEquals("test@example.com", testUser.getEmail());
@@ -20,21 +21,45 @@ public class UserTest {
     }
 
     @Test
-    public void testLogin() {
+    void testAuthenticate() {
+        assertTrue(testUser.authenticate("password"));
+        assertFalse(testUser.authenticate("wrongpassword"));
+    }
+
+    @Test
+    void testLogin() {
+        // Test with username
         assertTrue(testUser.login("testuser", "password"));
+        
+        // Test with email
         assertTrue(testUser.login("test@example.com", "password"));
+        
+        // Test wrong credentials
         assertFalse(testUser.login("testuser", "wrongpassword"));
         assertFalse(testUser.login("wronguser", "password"));
     }
 
     @Test
-    public void testCreateChannel() {
+    void testCreateChannel() {
         Channel channel = testUser.createChannel("Test Channel", "Test Description");
-
+        
         assertNotNull(channel);
         assertEquals("Test Channel", channel.getChannelName());
-        assertEquals("Test Description", channel.getChannelDescription());
         assertEquals(testUser, channel.getOwner());
+        assertEquals("Test Description", channel.getChannelDescription());
+        
+        // Verify the user's channel reference is set
         assertEquals(channel, testUser.getChannel());
+        
+        // Test creating second channel (should not be allowed)
+        Channel channel2 = testUser.createChannel("Second Channel", "Second Desc");
+        assertEquals(channel, testUser.getChannel()); // Should still reference first channel
+    }
+
+    @Test
+    void testHasChannel() {
+        assertFalse(testUser.hasChannel());
+        testUser.createChannel("Test Channel", "Test Description");
+        assertTrue(testUser.hasChannel());
     }
 }
