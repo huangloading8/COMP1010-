@@ -28,26 +28,25 @@ public class Channel {
     }
 
     // Method for creating a playlist for a channel (limiting to 5 playlists per channel)
-    public void createPlaylist(String name) {
+    public Playlist createPlaylist(String name) {
         if (playlists.size() >= 5) {
             System.out.println("Cannot create more than 5 playlists.");
-            return;
+            return null;
         }
-        playlists.add(new Playlist(name, owner));
+       Playlist newPlaylist = new Playlist(name, owner);
+        playlists.add(newPlaylist);
         System.out.println("Playlist \"" + name + "\" created.");
+        return newPlaylist;
     }
 
     // Method for delete a playlist from a channel
     public boolean removePlaylist(String name) {
-
-        for (int i = 0; i < playlists.size(); i++) {
-            if (playlists.get(i).getPlaylistName().equals(name)) {  
-                playlists.remove(i);
-                System.out.println("Playlist \"" + name + "\" removed.");
-                return true;
-            }
+        Playlist playlist = getPlaylistByName(name);
+        if (playlist != null) {
+            playlists.remove(playlist);
+            System.out.println("Playlist \"" + name + "\" removed.");
+            return true;
         }
-
         System.out.println("Playlist \"" + name + "\" not found.");
         return false;
     }
@@ -82,17 +81,13 @@ public class Channel {
 
     // Method for removing a video from a playlist, using the video ID
     public boolean removeVideo(int videoID) {
-
-        for (int i = 0; i < videos.size(); i++) {
-            if (videos.get(i).getVideoID() == videoID) {
-                Video videoToRemove = videos.get(i);
-                videos.remove(i);                    
-                CSVUtils.removeVideoFromCSV(videoToRemove); 
-                System.out.println("Video ID " + videoID + " has been removed.");
-                return true;
-            }
+        Video videoToRemove = getVideoById(videoID);
+        if (videoToRemove != null) {
+            videos.remove(videoToRemove);                    
+            CSVUtils.removeVideoFromCSV(videoToRemove); 
+            System.out.println("Video ID " + videoID + " has been removed.");
+            return true;
         }
-        
         System.out.println("Video ID " + videoID + " not found.");
         return false;
     }
@@ -102,6 +97,15 @@ public class Channel {
         for (Video v : videos) {
             if (v.getVideoID() == id) {
                 return v;
+            }
+        }
+        return null;
+    }
+
+    public Playlist getPlaylistByName(String name) {
+        for (Playlist p : playlists) {
+            if (p.getPlaylistName().equals(name)) {
+                return p;
             }
         }
         return null;

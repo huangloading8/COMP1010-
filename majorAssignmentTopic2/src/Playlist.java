@@ -7,10 +7,12 @@ public class Playlist {
     private String playlistName;
     private DNode start;
     private DNode end;
+    private User owner;
 
     // This is the Playlist constructor with all of the required elements for a playlist
     public Playlist(String playlistName, User owner) {
         this.playlistName = playlistName;
+        this.owner = owner;
         this.start = null;
         this.end = null;
     }
@@ -41,33 +43,57 @@ public class Playlist {
      * @param dnode the node to remove; if null, no action is taken
      */
     public void removeVideoFromPlaylist(DNode dnode) {
-        if (dnode == null) {
-            return;
-        }
+        if (dnode == null) return;
+    
         
         // Update start or end of the linked list if necessary
-        if (dnode == start) {
-            start = dnode.getNext();
-        }
-        if (dnode == end) {
-            end = dnode.getPrevious();
-        }
+        if (dnode == start) start = dnode.getNext();
+    
+        if (dnode == end) end = dnode.getPrevious();
+        
         
         // Link the nodes before and after dnode to each other
-        if (dnode.getPrevious() != null) {
-            dnode.getPrevious().setNext(dnode.getNext());
-        }
-        if (dnode.getNext() != null) {
-            dnode.getNext().setPrevious(dnode.getPrevious());
-        }
+        if (dnode.getPrevious() != null) dnode.getPrevious().setNext(dnode.getNext());
+    
+        if (dnode.getNext() != null) dnode.getNext().setPrevious(dnode.getPrevious());
+
         
         // Reset the removed node’s previous and next pointers
         dnode.setPrevious(null);
         dnode.setNext(null);
     }
+
+    public boolean removeVideoById(int videoId) {
+        DNode toRemove = findVideoNode(videoId);
+        if (toRemove != null) {
+            removeVideoFromPlaylist(toRemove);1
+            return true;
+        }
+        return false;
+    }
     
     public DNode getStart() {
         return start;
+    }
+
+    //added for dele
+    public DNode findVideoNode(int videoId) {
+        DNode current = start;
+        while (current != null) {
+            if (current.getVideo().getId() == videoId) {
+                return current;
+            }
+            current = current.getNext();
+        }
+        return null;
+    }
+
+    public boolean containsVideo(int videoId) {
+        return findVideoNode(videoId) != null;
+    }
+
+    public User getOwner() {
+        return owner;
     }
 }
 

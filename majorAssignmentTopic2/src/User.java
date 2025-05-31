@@ -39,8 +39,7 @@ public class User {
 
     // Create a new user account
     public static User createAccount(String username, String email, String password) {
-        User newUser = new User(username, email, password);
-        return newUser;
+        return new User(username, email, password);
     }
 
     /*
@@ -76,11 +75,16 @@ public class User {
     public Channel createChannel(String channelName, String channelDescription) {
         if (this.channel == null) {
             this.channel = new Channel(channelName, this, channelDescription);
-        } else {
-            System.out.println("You already have a channel: " + channel.getChannelName());
+            return this.channel;
         }
+        System.out.println("You already have a channel: " + channel.getChannelName());
         return this.channel;
     }
+
+    /* try to see if it works
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }*/
     
     public Channel getChannel() {
         return this.channel;
@@ -91,20 +95,8 @@ public class User {
         return this.channel != null;
     }
 
-    public ArrayList<Playlist> playlists = new ArrayList<>();
-
-    // This method creates a new playlist and add to the user's playlist list
-    public Playlist createPlaylist(String playlistName) {
-    Playlist newPlaylist = new Playlist(playlistName, this);
-    playlists.add(newPlaylist);
-    return newPlaylist;
-    }
-
-    public ArrayList<Playlist> getPlaylists() {
-        return playlists;
-    }
-
     public String getPassword() {
         return password;
     }
+    
 }
