@@ -58,19 +58,28 @@ public class User {
      * @param password password to authenticate
      * @return true if login successful, false otherwise
      */
-    public boolean login(String identifier, String password) {
-        if (this.username.equals(identifier) || this.email.equals(identifier)) {
-            if (authenticate(password)) {
-                System.out.println("Login Success");
-                System.out.println("=== Welcome, " + this.username + " (" + getUserType() + ")!" + " ===");
-                return true;
-            } else {
+
+     
+     public boolean login(String identifier, String password) {
+        if (Authentication.login(this, identifier, password)) {
+            System.out.println("=== Welcome, " + username + " (" + getUserType() + ")! ===");
+            return true;
+        }
+        return false;
+    }
+
+    public class Authentication {
+        public static boolean login(User user, String identifier, String password) {
+            if (!user.getUsername().equals(identifier) && !user.getEmail().equals(identifier)) {
+                System.out.println("Username/Email not valid");
+                return false;
+            }
+            if (!user.authenticate(password)) {
                 System.out.println("Wrong Password");
                 return false;
             }
+            return true;
         }
-        System.out.println("Username or Email not valid");
-        return false;
     }
     
     /*

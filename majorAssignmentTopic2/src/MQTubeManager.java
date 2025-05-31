@@ -550,31 +550,23 @@ public class MQTubeManager {
      * It will match with title, description or channel names
      */
     private void searchVideos() {
-        System.out.print("Enter keyword to search: ");
+        System.out.print("Enter keyword: ");
         String keyword = scanner.nextLine().toLowerCase();
-
+    
         boolean found = false;
-        System.out.println("\n=== Search Results for: \"" + keyword + "\" ===");
+        System.out.println("\n=== Search Results ===");
         for (Channel c : channels) {
-            for (Video v : c.getVideos()) {
-                if (v.getTitle().toLowerCase().contains(keyword) ||
-                    v.getDescription().toLowerCase().contains(keyword) ||
-                    c.getChannelName().toLowerCase().contains(keyword)) {
-
+            ArrayList<Video> matches = c.searchVideos(keyword);
+            if (!matches.isEmpty()) {
+                found = true;
+                for (Video v : matches) {
                     System.out.println("Title: " + v.getTitle());
-                    System.out.println("Description: " + v.getDescription());
                     System.out.println("Channel: " + c.getChannelName());
-                    System.out.println("Duration: " + v.getDuration() + " seconds");
-                    System.out.println("Uploaded on: " + v.getDateUploaded());
                     System.out.println("-----------");
-                    found = true;
                 }
             }
         }
-
-        if (!found) {
-            System.out.println("No videos found matching your keyword.");
-        }
+        if (!found) System.out.println("No matches found.");
     }
 }
 
