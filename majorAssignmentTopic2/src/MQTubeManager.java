@@ -75,7 +75,7 @@ public class MQTubeManager {
 
     // Method for loading users from CSV data files to the program
     private void loadUsersFromCSV() {
-        String csvFile = "users.csv";
+        String csvFile = "data/users.csv";
         String line;
         String csvSplitBy = ",";
 
@@ -228,7 +228,7 @@ public class MQTubeManager {
 
     //  Appends a newly registered user's data to the CSV data file
     private void saveUserToCSV(User user) {
-        try (FileWriter writer = new FileWriter("users.csv", true)) { // true = append mode
+        try (FileWriter writer = new FileWriter("data/users.csv", true)) { // true = append mode
             String line = String.format("%s,%s,%s\n", user.getUsername(), user.getEmail(), user.getPassword());
             writer.write(line);
         } catch (IOException e) {
