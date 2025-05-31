@@ -1,5 +1,3 @@
-package src;
-
 // This class represents comments made by user
 public class Comment {
     private String commentID;

@@ -1,5 +1,3 @@
-package src;
-
 /*
  * This is a DNode class that will be used to create LinkList
  * The Playlist will be a double LinkList containing Video objects
