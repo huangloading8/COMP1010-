@@ -21,20 +21,10 @@ public class Channel {
         this.playlists = new ArrayList<>();
     }
 
-    public ArrayList<Video> searchVideos(String keyword) {
-        ArrayList<Video> results = new ArrayList<>();
-        for (Video v : videos) {
-            if (v.getTitle().toLowerCase().contains(keyword) || 
-                v.getDescription().toLowerCase().contains(keyword)) {
-                results.add(v);
-            }
-        }
-        return results;
-    }
-
+    // Method for adding a video to a channel and prints a confirmation message.
     public void uploadVideo(Video video) {
         videos.add(video);
-        CSVUtils.appendVideoToCSV(video); // Direct CSV handling
+        System.out.println("Video \"" + video.getTitle() + "\" uploaded to channel: " + channelName); // upload successful message
     }
 
     // Method for creating a playlist for a channel (limiting to 5 playlists per channel)
