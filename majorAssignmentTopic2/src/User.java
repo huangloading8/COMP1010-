@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /*
  * This class represents a MQTube User
  * It contains methods for operating on a user account

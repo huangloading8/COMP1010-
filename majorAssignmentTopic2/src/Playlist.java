@@ -66,7 +66,7 @@ public class Playlist {
     public boolean removeVideoById(int videoId) {
         DNode toRemove = findVideoNode(videoId);
         if (toRemove != null) {
-            removeVideoFromPlaylist(toRemove);1
+            removeVideoFromPlaylist(toRemove);
             return true;
         }
         return false;
