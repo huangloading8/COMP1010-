@@ -24,9 +24,9 @@ public class MQTubeManager {
         // Predefined users
         users.add(User.createAccount("alice", "alice@students.mq.edu.au", "pass123"));
         users.add(User.createAccount("bob", "bob@mq.edu.au", "bobpass"));
-        users.add(User.createAccount("charlie", "charlie@example.com", "charliepw"));
-        users.add(User.createAccount("diana", "diana@example.com", "dianapass"));
-        users.add(User.createAccount("evelane", "evelane@example.com", "trixieissocool"));
+        users.add(User.createAccount("charlie", "charlie@students.mq.edu.au", "charliepw"));
+        users.add(User.createAccount("diana", "diana@students.mq.edu.au", "dianapass"));
+        users.add(User.createAccount("evelane", "evelane@students.mq.edu.au", "trixieissocool"));
 
         // Channels & videos
         Channel aliceChannel = users.get(0).createChannel("Alice's Code Corner", "Tutorials from a Macquarie IT student");
@@ -164,7 +164,7 @@ public class MQTubeManager {
                 String email = scanner.nextLine();
 
                 if (!email.endsWith("@mq.edu.au") && !email.endsWith("@students.mq.edu.au")) {
-                    System.out.println("Only Macquarie University emails are allowed (@mq.edu.au or @students.mq.edu.au)");
+                    System.out.println("Only Macquarie University emails are valid (@mq.edu.au or @students.mq.edu.au)");
                     continue;
                 }
 

@@ -47,7 +47,7 @@ public class User {
         } else if (email.endsWith("@students.mq.edu.au")) {
             return "Student";
         }
-        return "Regular User";
+        throw new IllegalStateException("Invalid user");
     }
 
     /*
