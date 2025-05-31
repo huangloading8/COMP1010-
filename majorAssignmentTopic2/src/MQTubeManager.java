@@ -22,8 +22,8 @@ public class MQTubeManager {
 
     private void initializeData() {
         // Predefined users
-        users.add(User.createAccount("alice", "alice@example.com", "pass123"));
-        users.add(User.createAccount("bob", "bob@example.com", "bobpass"));
+        users.add(User.createAccount("alice", "alice@students.mq.edu.au", "pass123"));
+        users.add(User.createAccount("bob", "bob@mq.edu.au", "bobpass"));
         users.add(User.createAccount("charlie", "charlie@example.com", "charliepw"));
         users.add(User.createAccount("diana", "diana@example.com", "dianapass"));
         users.add(User.createAccount("evelane", "evelane@example.com", "trixieissocool"));
@@ -160,8 +160,13 @@ public class MQTubeManager {
                 System.out.print("Enter new username: ");
                 String username = scanner.nextLine();
 
-                System.out.print("Enter email: ");
+                System.out.print("Enter email (must end with @mq.edu.au or @students.mq.edu.au): ");
                 String email = scanner.nextLine();
+
+                if (!email.endsWith("@mq.edu.au") && !email.endsWith("@students.mq.edu.au")) {
+                    System.out.println("Only Macquarie University emails are allowed (@mq.edu.au or @students.mq.edu.au)");
+                    continue;
+                }
 
                 System.out.print("Enter password: ");
                 String password = scanner.nextLine();
@@ -228,6 +233,10 @@ public class MQTubeManager {
     private void viewAllVideos() {
         System.out.println("\n=== All MqTube Videos ===");
         for (Channel c : channels) {
+            User owner = c.getOwner();
+            System.out.println("Channel: " + c.getChannelName() + 
+                            " (Owner: " + owner.getUsername() + 
+                            " - " + owner.getUserType() + ")");
             for (Video v : c.getVideos()) {
                 System.out.println("Title: " + v.getTitle());
                 System.out.println("Description: " + v.getDescription());
@@ -243,7 +252,7 @@ public class MQTubeManager {
         System.out.println("\n=== All MQTube Playlists ===");
 
         for (User u : users) {
-            System.out.println("User: " + u.getUsername());
+            System.out.println("User: " + u.getUsername() + " (" + u.getUserType() + ")");
 
             Channel channel = u.getChannel();
             if (channel == null) {

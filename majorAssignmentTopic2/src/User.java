@@ -40,6 +40,16 @@ public class User {
         return new User(username, email, password);
     }
 
+    //getting user type base on their email
+     public String getUserType() {
+        if (email.endsWith("@mq.edu.au")) {
+            return "Staff";
+        } else if (email.endsWith("@students.mq.edu.au")) {
+            return "Student";
+        }
+        return "Regular User";
+    }
+
     /*
      * This method is used to login the user using username or email and password.
      * It will print login status messages.
@@ -52,7 +62,7 @@ public class User {
         if (this.username.equals(identifier) || this.email.equals(identifier)) {
             if (authenticate(password)) {
                 System.out.println("Login Success");
-                System.out.println("=== Welcome, " + this.username + "!" + " ===");
+                System.out.println("=== Welcome, " + this.username + " (" + getUserType() + ")!" + " ===");
                 return true;
             } else {
                 System.out.println("Wrong Password");
