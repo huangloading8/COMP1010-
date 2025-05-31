@@ -93,6 +93,7 @@ Beatrice Annika Lim (48396966) : 33%
     -Command line inputs 
     -Methods for Video, Channel, and User
     -Functionality for Client 
+    -JUNIT tetsing functionality 
 
 
 Trieu Long Vu (SID) : 33% 
