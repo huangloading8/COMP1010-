@@ -24,7 +24,7 @@ public class MQTubeManager {
         channels = new ArrayList<>();
         scanner = new Scanner(System.in);
 
-        loadUsersFromCSV(); // Load user from the CSV files
+        loadUsersFromCSV(); // Load and initialize users from the CSV data files
         initializeData();
     }
 

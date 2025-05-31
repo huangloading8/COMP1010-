@@ -5,21 +5,31 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+/*
+ * This is the main class, which handles the core logic for user management,
+ * video uploading, playlist editing, and menu interaction.
+ * In other words, this contains the code for all user to use, or interact, with the platform
+ */
 
 public class MQTubeManager {
     private ArrayList<User> users;
     private ArrayList<Channel> channels;
     private Scanner scanner;
 
+    // COMMENT LATER
     public MQTubeManager() {
         users = new ArrayList<>();
         channels = new ArrayList<>();
         scanner = new Scanner(System.in);
 
-        loadUsersFromCSV(); 
+        loadUsersFromCSV(); // Load and initialize users from the CSV data files
         initializeData();
     }
 
+    /*
+     * Add some pre-defined users and channels for demonstration and testing purposes
+     * Sample Videos and Playlists are added to the channels 
+     */
     private void initializeData() {
         // Predefined users
         users.add(User.createAccount("alice", "alice@students.mq.edu.au", "pass123"));
@@ -63,6 +73,7 @@ public class MQTubeManager {
         charliePlaylist.addVideoToPlaylist(charlieChannel.getVideos().get(1)); // GitHub for Assignments
     }
 
+    // Method for loading users from CSV data files to the program
     private void loadUsersFromCSV() {
         String csvFile = "users.csv";
         String line;
@@ -89,10 +100,18 @@ public class MQTubeManager {
         // Login Feature
        //CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
 
+    /*
+     * This is the entry point for running the program after opening
+     * It will handle the display menu, as well as the users actions menu
+     */
     public void run() {
         System.out.println("=== Welcome to MqTube! ===");
         System.out.println("Please log in with your username or email.");
 
+        /*
+         * Login method is called here
+         * If logged in successfully, the actions menu will appear
+         */
         User loggedInUser = login();
 
         boolean exit = false;
@@ -126,7 +145,10 @@ public class MQTubeManager {
         scanner.close();
     }
 
-    
+    /*
+     * This class handles user login and sign-up flow with validation
+     * Loops until successful login or account creation
+     */   
     private User login() {
         User loggedInUser = null;
 
@@ -138,7 +160,7 @@ public class MQTubeManager {
             String choice = scanner.nextLine().trim();
 
             if (choice.equals("1")) {
-                // Login flow
+                // Users are required to enter their username or email and password to login
                 System.out.print("Enter username or email: ");
                 String identifier = scanner.nextLine();
                 System.out.print("Enter password: ");
@@ -150,13 +172,14 @@ public class MQTubeManager {
                         break;
                     }
                 }
-
+                
+                // If the user can not be found, then an error message will appear
                 if (loggedInUser == null) {
                     System.out.println("Login failed. Please try again.\n");
                 }
 
             } else if (choice.equals("2")) {
-                // Sign up flow
+                // Users can sign up using MQ email with a password
                 System.out.print("Enter new username: ");
                 String username = scanner.nextLine();
 
@@ -186,7 +209,7 @@ public class MQTubeManager {
                 } else {
                     loggedInUser = User.createAccount(username, email, password);
                     users.add(loggedInUser);
-                    saveUserToCSV(loggedInUser); 
+                    saveUserToCSV(loggedInUser); // User information will be saved to CSV data files
                     System.out.println("Account created successfully. You are now logged in as " + username + "!\n");
                 }
 
@@ -198,6 +221,7 @@ public class MQTubeManager {
         return loggedInUser;
     }
 
+    //  Appends a newly registered user's data to the CSV data file
     private void saveUserToCSV(User user) {
         try (FileWriter writer = new FileWriter("users.csv", true)) { // true = append mode
             String line = String.format("%s,%s,%s\n", user.getUsername(), user.getEmail(), user.getPassword());
@@ -207,7 +231,7 @@ public class MQTubeManager {
         }
     }
 
-
+    // This method displays the list of all user actions
     private void showMenu() {
         System.out.println("\nWhat would you like to do?");
         System.out.println(" 1. View Videos");
@@ -221,6 +245,7 @@ public class MQTubeManager {
         System.out.print("Enter the number for your action: ");
     }
 
+    
     private int getUserAction() {
         try {
             return Integer.parseInt(scanner.nextLine());
@@ -230,6 +255,10 @@ public class MQTubeManager {
         }
     }
 
+    /*
+     * This method displays all videos available across all channels
+     * It shows video title, description, duration, upload date, channel and user who owns it
+     */
     private void viewAllVideos() {
         System.out.println("\n=== All MqTube Videos ===");
         for (Channel c : channels) {
@@ -248,6 +277,10 @@ public class MQTubeManager {
         }
     }
 
+    /*
+     * This method shows all users' playlists, including which user and channel they belong to 
+     * The number of videos in the playlist are shown, as well as videos information
+     */
     private void viewPlaylists() {
         System.out.println("\n=== All MQTube Playlists ===");
 
@@ -291,7 +324,10 @@ public class MQTubeManager {
         }
     }
 
-
+    /*
+     * This method allow a logged-in user to upload a video by entering video details
+     * The video is then uploaded to the channel and will be loaded into the CSV data file
+     */
     private void uploadVideo(User loggedInUser) {
         Channel userChannel = loggedInUser.getChannel();
 
@@ -319,6 +355,10 @@ public class MQTubeManager {
         System.out.println("Video uploaded successfully with ID: " + newVideo.getId());
     }
 
+    /*
+     * Users can delete a video from their channel
+     * The deleted video will also be removed from the CSV data file
+     */
     private void deleteVideo(User loggedInUser) {
         System.out.print("Enter the video ID to remove: ");
         int videoID = Integer.parseInt(scanner.nextLine());
@@ -338,6 +378,11 @@ public class MQTubeManager {
         System.out.println("No video with ID " + videoID + " found in your channel.");
     }
 
+    /*
+     * This is the option to show the menu for editing the playlist
+     * Users can view playlists from their channels, as well as
+     * adding or removing videos from the playlist
+     */
     private void editPlaylist(User loggedInUser) {
         Channel userChannel = loggedInUser.getChannel();
 
@@ -461,8 +506,10 @@ public class MQTubeManager {
         }
     }
 
-
-
+    /*
+     * This method allows user to edit their channel (name, description)
+     * If they don't have a channel, this will create one
+     */
     private void editChannel(User loggedInUser) {
         Channel userChannel = loggedInUser.getChannel();
 
@@ -493,6 +540,10 @@ public class MQTubeManager {
         }
     }
 
+    /*
+     * Users can search all videos and channels by keywords
+     * It will match with title, description or channel names
+     */
     private void searchVideos() {
         System.out.print("Enter keyword to search: ");
         String keyword = scanner.nextLine().toLowerCase();
