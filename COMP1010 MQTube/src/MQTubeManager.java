@@ -1,3 +1,5 @@
+package src;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -5,30 +7,40 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+/*
+ * This is the main class, which handles the core logic for user management,
+ * video uploading, playlist editing, and menu interaction.
+ * In other words, this contains the code for all user to use, or interact, with the platform
+ */
 
 public class MQTubeManager {
     private ArrayList<User> users;
     private ArrayList<Channel> channels;
     private Scanner scanner;
 
+    // COMMENTS LATER
     public MQTubeManager() {
         users = new ArrayList<>();
         channels = new ArrayList<>();
         scanner = new Scanner(System.in);
 
-        loadUsersFromCSV(); 
+        loadUsersFromCSV(); // Load user from the CSV files
         initializeData();
     }
 
+    /*
+     * Add some pre-defined users and channels for demonstration and testing purposes
+     * Sample Videos and Playlists are added to the channels 
+     */
     private void initializeData() {
         // Predefined users
-        users.add(User.createAccount("alice", "alice@students.mq.edu.au", "pass123"));
-        users.add(User.createAccount("bob", "bob@mq.edu.au", "bobpass"));
-        users.add(User.createAccount("charlie", "charlie@students.mq.edu.au", "charliepw"));
-        users.add(User.createAccount("diana", "diana@students.mq.edu.au", "dianapass"));
-        users.add(User.createAccount("evelane", "evelane@students.mq.edu.au", "trixieissocool"));
+        users.add(User.createAccount("alice", "alice@example.com", "pass123"));
+        users.add(User.createAccount("bob", "bob@example.com", "bobpass"));
+        users.add(User.createAccount("charlie", "charlie@example.com", "charliepw"));
+        users.add(User.createAccount("diana", "diana@example.com", "dianapass"));
+        users.add(User.createAccount("evelane", "evelane@example.com", "trixieissocool"));
 
-        // Channels & videos
+        // Channels & Videos
         Channel aliceChannel = users.get(0).createChannel("Alice's Code Corner", "Tutorials from a Macquarie IT student");
         aliceChannel.uploadVideo(new Video("Intro to Python Programming", "COMP1010 crash course", 600, 20250401, aliceChannel));
         aliceChannel.uploadVideo(new Video("Data Types in Java", "COMP1250 examples", 540, 20250402, aliceChannel));
@@ -46,24 +58,25 @@ public class MQTubeManager {
 
         // Create & Add Videos to Playlists
         // Alice's Playlist
-        aliceChannel.createPlaylist("Beginner Coding");
+        aliceChannel.createPlaylist("Beginner Coding"); 
         Playlist alicePlaylist = aliceChannel.getPlaylists().get(0);  // Get the newly created playlist
-        alicePlaylist.addVideoToPlaylist(aliceChannel.getVideos().get(0)); // Intro to Python
-        alicePlaylist.addVideoToPlaylist(aliceChannel.getVideos().get(1)); // Data Types in Java
+        alicePlaylist.addVideoToPlaylist(aliceChannel.getVideos().get(0));
+        alicePlaylist.addVideoToPlaylist(aliceChannel.getVideos().get(1)); 
 
         // Bob's Playlist
         bobChannel.createPlaylist("Bob's Favourites");
         Playlist bobPlaylist = bobChannel.getPlaylists().get(0);
-        bobPlaylist.addVideoToPlaylist(bobChannel.getVideos().get(1)); // MySQL Basics
+        bobPlaylist.addVideoToPlaylist(bobChannel.getVideos().get(1)); 
 
         // Charlie's Playlist
         charlieChannel.createPlaylist("Web Dev Essentials");
         Playlist charliePlaylist = charlieChannel.getPlaylists().get(0);
-        charliePlaylist.addVideoToPlaylist(charlieChannel.getVideos().get(0)); // Intro to Web Dev
-        charliePlaylist.addVideoToPlaylist(charlieChannel.getVideos().get(1)); // GitHub for Assignments
+        charliePlaylist.addVideoToPlaylist(charlieChannel.getVideos().get(0)); 
+        charliePlaylist.addVideoToPlaylist(charlieChannel.getVideos().get(1));
     }
 
-    private void loadUsersFromCSV() {
+    // COMMENTS LATER
+    private void loadUsersFromCSV() { 
         String csvFile = "users.csv";
         String line;
         String csvSplitBy = ",";
@@ -89,11 +102,19 @@ public class MQTubeManager {
         // Login Feature
        //CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
 
+    /*
+     * This is the entry point for running the program after opening
+     * It will handle the display menu, as well as the users actions menu
+     */
     public void run() {
         System.out.println("=== Welcome to MqTube! ===");
         System.out.println("Please log in with your username or email.");
 
-        User loggedInUser = login();
+        /*
+         * Login method is called here
+         * If logged in successfully, the actions menu will appear
+         */
+        User loggedInUser = login(); 
 
         boolean exit = false;
         
@@ -126,7 +147,10 @@ public class MQTubeManager {
         scanner.close();
     }
 
-    
+    /*
+     * This class handles user login and sign-up flow with validation
+     * Loops until successful login or account creation
+     */
     private User login() {
         User loggedInUser = null;
 
@@ -160,13 +184,8 @@ public class MQTubeManager {
                 System.out.print("Enter new username: ");
                 String username = scanner.nextLine();
 
-                System.out.print("Enter email (must end with @mq.edu.au or @students.mq.edu.au): ");
+                System.out.print("Enter email: ");
                 String email = scanner.nextLine();
-
-                if (!email.endsWith("@mq.edu.au") && !email.endsWith("@students.mq.edu.au")) {
-                    System.out.println("Only Macquarie University emails are valid (@mq.edu.au or @students.mq.edu.au)");
-                    continue;
-                }
 
                 System.out.print("Enter password: ");
                 String password = scanner.nextLine();
@@ -233,10 +252,6 @@ public class MQTubeManager {
     private void viewAllVideos() {
         System.out.println("\n=== All MqTube Videos ===");
         for (Channel c : channels) {
-            User owner = c.getOwner();
-            System.out.println("Channel: " + c.getChannelName() + 
-                            " (Owner: " + owner.getUsername() + 
-                            " - " + owner.getUserType() + ")");
             for (Video v : c.getVideos()) {
                 System.out.println("Title: " + v.getTitle());
                 System.out.println("Description: " + v.getDescription());
@@ -252,7 +267,7 @@ public class MQTubeManager {
         System.out.println("\n=== All MQTube Playlists ===");
 
         for (User u : users) {
-            System.out.println("User: " + u.getUsername() + " (" + u.getUserType() + ")");
+            System.out.println("User: " + u.getUsername());
 
             Channel channel = u.getChannel();
             if (channel == null) {
@@ -267,8 +282,8 @@ public class MQTubeManager {
                 System.out.println("  No playlists.");
             } else {
                 for (Playlist p : playlists) {
-                    System.out.println("  Playlist: " + p.getPlaylistName() +
-                   " (" + p.countPlaylistVideos(p.getStart()) + " videos)");
+                    System.out.println("  Playlist: " + p.getPlaylistName() 
+                    + " (" + p.countPlaylistVideos(p.getStart()) + " videos)");
 
                     DNode current = p.getStart();
                     if (current == null) {
