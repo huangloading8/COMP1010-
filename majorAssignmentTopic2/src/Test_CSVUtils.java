@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.ArrayList;
 
-class CSVUtilsTest {
+class Test_CSVUtils {
     private User testUser;
     private Channel testChannel;
     private Video testVideo;

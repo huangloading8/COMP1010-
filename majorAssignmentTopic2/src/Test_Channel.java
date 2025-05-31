@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 
-public class ChannelTest {
+public class Test_Channel {
 
     private Channel channel;
     private User user;

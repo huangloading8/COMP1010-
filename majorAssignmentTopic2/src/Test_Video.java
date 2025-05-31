@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class VideoTest {
+public class Test_Video {
     private Channel testChannel;
     private Video testVideo;
 
