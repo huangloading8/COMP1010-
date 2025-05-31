@@ -272,6 +272,7 @@ public class MQTubeManager {
                             " (Owner: " + owner.getUsername() + 
                             " - " + owner.getUserType() + ")");
             for (Video v : c.getVideos()) {
+                System.out.println("VideoID: " + v.getId());
                 System.out.println("Title: " + v.getTitle());
                 System.out.println("Description: " + v.getDescription());
                 System.out.println("Channel: " + c.getChannelName());
@@ -315,6 +316,7 @@ public class MQTubeManager {
 
                     while (current != null) {
                         Video v = current.getVideo();
+                        System.out.println("    VideoID: " + v.getId());
                         System.out.println("    Title: " + v.getTitle());
                         System.out.println("    Description: " + v.getDescription());
                         System.out.println("    Channel: " + v.getChannel().getChannelName());
