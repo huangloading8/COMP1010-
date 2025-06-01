@@ -9,14 +9,14 @@ class Test_CSVUtils {
     private Channel testChannel;
     private Video testVideo;
 
-    @BeforeEach
+   @BeforeEach
     void setUp() {
         testUser = new User("testuser", "test@example.com", "password");
         testChannel = new Channel("Test Channel", testUser, "Test Description");
         testVideo = new Video("Test Video", "Test Description", 120, 20250101, testChannel);
         
-        // Clean up any existing test files
-        File testFile = new File("testuser_videos.csv");
+        // CSV file cleanup
+        File testFile = new File("data/" + testUser.getUsername() + "_videos.csv");
         if (testFile.exists()) {
             testFile.delete();
         }

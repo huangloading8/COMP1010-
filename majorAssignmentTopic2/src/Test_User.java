@@ -37,7 +37,7 @@ class Test_User {
         // Case sensitivity
         assertFalse(testUser.login("TestUser", "password"));
         assertFalse(testUser.login("TEST@EXAMPLE.COM", "password"));
-}
+    }
 
    @Test
     void testCreateChannel() {
