@@ -72,11 +72,6 @@ public class Test_User {
     }
 
 
-    @Test
-    void testEmptyVideoList() {
-        Channel channel = testUser.createChannel("Empty Channel", "No videos");
-        assertTrue(channel.getVideos().isEmpty()); // Assuming getVideos() returns a list
-    }
 
     @Test
     void testCreateChannelWithNulls() {

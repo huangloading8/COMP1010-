@@ -97,10 +97,11 @@ Implemented in Java using object-oriented design. Key components:
    4: **Delete Video** – Remove one of your uploaded videos  
       - Updates your CSV file  
    5: **Edit Playlist** – Rename playlist or remove videos  
-   6: **Edit Channel** – Create/edit your channel info  
+   6: **Create Playlist** – Create a playlist
+   7: **Edit Channel** – Create/edit your channel info  
       - Channel won’t appear in CSV until a video is uploaded  
-   7: **Search Videos** – Search videos by keyword (title, description, or channel)  
-   8: **Exit MQTube** – Exit the program
+   8: **Search Videos** – Search videos by keyword (title, description, or channel)  
+   9: **Exit MQTube** – Exit the program
 
 ---
 
