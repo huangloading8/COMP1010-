@@ -87,7 +87,6 @@ public class Test_User {
     }
 
 
-
     @Test
     void testHasChannelAfterUnset() {
         Channel channel = testUser.createChannel("Initial Channel", "Desc");
