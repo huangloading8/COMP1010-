@@ -63,14 +63,14 @@ public class Test_Channel {
         Video video = new Video("Cool Video", "Nice video", 300, 20250601, channel);
         channel.uploadVideo(video);
 
-        boolean removed = channel.removeVideo(video.getId());
+        boolean removed = channel.removeVideoFromChannel(video.getId());
         assertTrue(removed);
         assertEquals(0, channel.getVideos().size());
     }
 
     @Test
     public void testRemoveVideo_NotFound() {
-        boolean removed = channel.removeVideo(999);
+        boolean removed = channel.removeVideoFromChannel(999);
         assertFalse(removed);
     }
 
