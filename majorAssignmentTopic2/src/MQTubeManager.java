@@ -275,7 +275,6 @@ public class MQTubeManager {
                 System.out.println("VideoID: " + v.getId());
                 System.out.println("Title: " + v.getTitle());
                 System.out.println("Description: " + v.getDescription());
-                System.out.println("Channel: " + c.getChannelName());
                 System.out.println("Duration: " + v.getDuration() + " seconds");
                 System.out.println("Uploaded on: " + v.getDateUploaded());
                 System.out.println("-----------");
@@ -336,31 +335,52 @@ public class MQTubeManager {
      * The video is then uploaded to the channel and will be loaded into the CSV data file
      */
     private void uploadVideo(User loggedInUser) {
-        Channel userChannel = loggedInUser.getChannel();
+    Channel userChannel = loggedInUser.getChannel();
 
-        if (userChannel == null) {
-            System.out.println("You need to create a channel before uploading a video.");
-            return;
-        }
-
-        System.out.print("Enter video title: ");
-        String title = scanner.nextLine();
-
-        System.out.print("Enter video description: ");
-        String desc = scanner.nextLine();
-
-        System.out.print("Enter video duration in seconds: ");
-        int duration = Integer.parseInt(scanner.nextLine());
-
-        System.out.print("Enter today's date (YYYYMMDD): ");
-        int date = Integer.parseInt(scanner.nextLine());
-
-        Video newVideo = new Video(title, desc, duration, date, userChannel);
-        userChannel.uploadVideo(newVideo);
-        CSVUtils.appendVideoToCSV(newVideo);
-
-        System.out.println("Video uploaded successfully with ID: " + newVideo.getId());
+    if (userChannel == null) {
+        System.out.println("You need to create a channel before uploading a video.");
+        return;
     }
+
+    System.out.print("Enter video title: ");
+    String title = scanner.nextLine();
+
+    System.out.print("Enter video description: ");
+    String desc = scanner.nextLine();
+
+    int duration = -1;
+    while (duration < 0) {
+        System.out.print("Enter video duration in seconds: ");
+        try {
+            duration = Integer.parseInt(scanner.nextLine());
+            if (duration < 0) {
+                System.out.println("Duration must be a positive number.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number for duration.");
+        }
+    }
+
+    int date = -1;
+    while (date < 0) {
+        System.out.print("Enter today's date (YYYYMMDD): ");
+        try {
+            date = Integer.parseInt(scanner.nextLine());
+            if (date < 0) {
+                System.out.println("Date must be a positive number.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid date (numbers only, e.g., 20250531).");
+        }
+    }
+
+    Video newVideo = new Video(title, desc, duration, date, userChannel);
+    userChannel.uploadVideo(newVideo);
+    CSVUtils.appendVideoToCSV(newVideo);
+
+    System.out.println("Video uploaded successfully with ID: " + newVideo.getId());
+}
+
 
     /*
      * Users can delete a video from their channel

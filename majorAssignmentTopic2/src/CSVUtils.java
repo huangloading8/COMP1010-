@@ -4,28 +4,41 @@ import java.util.ArrayList;
 public class CSVUtils {
 
     // Method to append a new video to the user's CSV file
-    public static void appendVideoToCSV(Video video) {
-        // Use the channel owner's username for the file name
-        String filename = video.getChannel().getOwner().getUsername() + "_videos.csv";
-        
-        try (FileWriter writer = new FileWriter(filename, true)) {
-            // Append the video details in CSV format
-            writer.append(video.getVideoID() + ",");
-            writer.append(video.getTitle() + ",");
-            writer.append(video.getDescription() + ",");
-            writer.append(video.getDuration() + ",");
-            writer.append(video.getDateUploaded() + ",");
-            writer.append(video.getChannel().getChannelName());
-            writer.append("\n");
-        } catch (IOException e) {
-            e.printStackTrace();
+  public static void appendVideoToCSV(Video video) {
+    File directory = new File("data");
+    if (!directory.exists()) {
+        boolean created = directory.mkdirs();
+        if (!created) {
+            System.err.println("Failed to create 'data' directory.");
+            return;
         }
     }
+
+    String filename = "data/" + video.getChannel().getOwner().getUsername() + "_videos.csv";
+
+    try (FileWriter writer = new FileWriter(filename, true)) {
+        String line = video.getVideoID() + "," +
+                      video.getTitle() + "," +
+                      video.getDescription() + "," +
+                      video.getDuration() + "," +
+                      video.getDateUploaded() + "," +
+                      video.getChannel().getChannelName() + "\n";
+
+        writer.append(line);
+
+        // ✅ Confirm what was written and where
+        System.out.println("Appended to file: " + filename);
+        System.out.println("Line written: " + line);
+
+    } catch (IOException e) {
+        System.err.println("Error writing to CSV: " + e.getMessage());
+    }
+}
 
     // Method to load videos from the user's CSV file
     public static ArrayList<Video> loadVideosForUser(Channel channel) {
         ArrayList<Video> videos = new ArrayList<>();
-        String filename = channel.getOwner().getUsername() + "_videos.csv";
+        String filename = "data/" + channel.getOwner().getUsername() + "_videos.csv";
 
         // Check if the file exists
         File file = new File(filename);
@@ -55,7 +68,7 @@ public class CSVUtils {
     public static void exportAllVideosToCSV(ArrayList<Channel> channels) {
         for (Channel channel : channels) {
             // Use the channel owner's username for the file name
-            String filename = channel.getOwner().getUsername() + "_videos.csv";
+            String filename = "data/" + channel.getOwner().getUsername() + "_videos.csv";
             
             try (FileWriter writer = new FileWriter(filename)) {
                 // Write header row in the CSV
@@ -81,9 +94,10 @@ public class CSVUtils {
 
      // Method to remove videos from the user's CSV file
     public static void removeVideoFromCSV(Video video) {
-        String filename = video.getChannel().getOwner().getUsername() + "_videos.csv";
+        String filename = "data/" + video.getChannel().getOwner().getUsername() + "_videos.csv";
         File inputFile = new File(filename);
-        File tempFile = new File("temp_" + filename);
+        File tempFile = new File("data/temp_" + video.getChannel().getOwner().getUsername() + "_videos.csv");
+
     
         try (
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
