@@ -112,12 +112,12 @@ Implemented in Java using object-oriented design. Key components:
 - Methods for Video, Channel, User  
 - Client logic, README, JUnit testing
 
-**Trieu Long Vu (SID)** – 33%  
+**Trieu Long Vu (48472530)** – 33%  
 - Set up classes, UML diagram  
 - Playlist functionality, User class  
 - Comment features, Methods for User, DNode, Playlist
 
-**Yongwen Huang (SID)** – 33%  
+**Yongwen Huang (47086068)** – 33%  
 - Set up classes, UML diagram  
 - JUnit tests, Delegation  
 - Video methods, CSV for video removal
