@@ -86,4 +86,6 @@ public class Test_Channel {
         assertEquals("New Name", channel.getChannelName());
         assertEquals("Updated Desc", channel.getChannelDescription());
     }
+
+    
 }
