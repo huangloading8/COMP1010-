@@ -1,60 +1,68 @@
 import java.io.*;
 import java.util.ArrayList;
 
+/*
+ * Utility class for handling CSV file operations.
+ * This class provides methods to save, load, and modify video data stored in CSV files.
+ */
+
 public class CSVUtils {
 
-    // Method to append a new video to the user's CSV file
-  public static void appendVideoToCSV(Video video) {
-    File directory = new File("data");
-    if (!directory.exists()) {
-        boolean created = directory.mkdirs();
-        if (!created) {
-            System.err.println("Failed to create 'data' directory.");
-            return;
+    // Appends a new video entry to the CSV file specific to the user/channel
+    public static void appendVideoToCSV(Video video) {
+        File directory = new File("data");
+
+        // Create the data directory if it doesn't exist
+        if (!directory.exists()) {
+            boolean created = directory.mkdirs();
+            if (!created) {
+                System.err.println("Failed to create 'data' directory.");
+                return;
+            }
+        }
+
+        // Construct the filename based on the channel owner's username
+        String filename = "data/" + video.getChannel().getOwner().getUsername() + "_videos.csv";
+
+        try (FileWriter writer = new FileWriter(filename, true)) {
+            // Build the CSV line for the video
+            String line = video.getVideoID() + "," +
+                          video.getTitle() + "," +
+                          video.getDescription() + "," +
+                          video.getDuration() + "," +
+                          video.getDateUploaded() + "," +
+                          video.getChannel().getChannelName() + "\n";
+
+            writer.append(line);
+
+            // Debug/confirmation output
+            System.out.println("Appended to file: " + filename);
+            System.out.println("Line written: " + line);
+
+        } catch (IOException e) {
+            System.err.println("Error writing to CSV: " + e.getMessage());
         }
     }
 
-    String filename = "data/" + video.getChannel().getOwner().getUsername() + "_videos.csv";
-
-    try (FileWriter writer = new FileWriter(filename, true)) {
-        String line = video.getVideoID() + "," +
-                      video.getTitle() + "," +
-                      video.getDescription() + "," +
-                      video.getDuration() + "," +
-                      video.getDateUploaded() + "," +
-                      video.getChannel().getChannelName() + "\n";
-
-        writer.append(line);
-
-        // ✅ Confirm what was written and where
-        System.out.println("Appended to file: " + filename);
-        System.out.println("Line written: " + line);
-
-    } catch (IOException e) {
-        System.err.println("Error writing to CSV: " + e.getMessage());
-    }
-}
-
-    // Method to load videos from the user's CSV file
+    // Loads all videos from the CSV file associated with a user's channel
     public static ArrayList<Video> loadVideosForUser(Channel channel) {
         ArrayList<Video> videos = new ArrayList<>();
         String filename = "data/" + channel.getOwner().getUsername() + "_videos.csv";
 
-        // Check if the file exists
         File file = new File(filename);
-        if (!file.exists()) return videos; // If no file exists, return an empty list
+        if (!file.exists()) return videos;  // Return empty list if no file exists
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
-            // Read each line from the CSV file
+
+            // Parse each line and construct Video objects
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
                 String title = data[1];
                 String description = data[2];
                 int duration = Integer.parseInt(data[3]);
                 int date = Integer.parseInt(data[4]);
-                
-                // Add the video to the list
+
                 videos.add(new Video(title, description, duration, date, channel));
             }
         } catch (IOException e) {
@@ -63,18 +71,17 @@ public class CSVUtils {
 
         return videos;
     }
-    
-    // Method to export all videos of all channels to CSV (Optional)
+
+    // Exports all videos for all users/channels into individual CSV files (used at startup or debugging)
     public static void exportAllVideosToCSV(ArrayList<Channel> channels) {
         for (Channel channel : channels) {
-            // Use the channel owner's username for the file name
             String filename = "data/" + channel.getOwner().getUsername() + "_videos.csv";
-            
+
             try (FileWriter writer = new FileWriter(filename)) {
-                // Write header row in the CSV
+                // Write the header row
                 writer.append("VideoID,Title,Description,Duration,DateUploaded,ChannelName\n");
 
-                // Iterate through each video in the channel
+                // Write each video's data
                 for (Video video : channel.getVideos()) {
                     writer.append(video.getVideoID() + ",");
                     writer.append(video.getTitle() + ",");
@@ -89,23 +96,22 @@ public class CSVUtils {
                 e.printStackTrace();
             }
         }
-
     }
 
-     // Method to remove videos from the user's CSV file
+    // Removes a video entry from a user's CSV file based on the video ID
     public static void removeVideoFromCSV(Video video) {
-        String filename = "data/" + video.getChannel().getOwner().getUsername() + "_videos.csv";
+        String username = video.getChannel().getOwner().getUsername();
+        String filename = "data/" + username + "_videos.csv";
         File inputFile = new File(filename);
-        File tempFile = new File("data/temp_" + video.getChannel().getOwner().getUsername() + "_videos.csv");
+        File tempFile = new File("data/temp_" + username + "_videos.csv");
 
-    
         try (
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))
         ) {
             String line;
             while ((line = reader.readLine()) != null) {
-                // Skip the line if it matches the video ID
+                // Skip the line if it starts with the video ID (meaning it's the one to delete)
                 if (line.startsWith(video.getVideoID() + ",")) {
                     continue;
                 }
@@ -114,13 +120,13 @@ public class CSVUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
-        // Replace original file with the updated temp file
+
+        // Replace original file with the updated temporary file
         if (!inputFile.delete()) {
             System.err.println("Could not delete original file.");
             return;
         }
-    
+
         if (!tempFile.renameTo(inputFile)) {
             System.err.println("Could not rename temp file.");
         }
