@@ -79,16 +79,21 @@ public class Channel {
         this.channelDescription = newDescription;
     }
 
-    // Method for removing a video from a playlist, using the video ID
-    public boolean removeVideo(int videoID) {
+    // Method for removing a video from a channel, using the video ID
+    public boolean removeVideoFromChannel(int videoID) {
         Video videoToRemove = getVideoById(videoID);
         if (videoToRemove != null) {
-            videos.remove(videoToRemove);                    
+            videos.remove(videoToRemove);  
+            
+            for (Playlist playlist : playlists) {
+                playlist.removeVideoById(videoID);
+            }
+            
             CSVUtils.removeVideoFromCSV(videoToRemove); 
-            System.out.println("Video ID " + videoID + " has been removed.");
+           
             return true;
         }
-        System.out.println("Video ID " + videoID + " not found.");
+       
         return false;
     }
     
