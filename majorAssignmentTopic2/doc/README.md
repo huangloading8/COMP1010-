@@ -1,159 +1,174 @@
-# ** MQ TUBE **
+# MQ TUBE
 # COMP1010 Group
 
-## **Project Overview**
-To simulate a simplified version of a video sharing platform (like YouTube) where users can create channels, upload videos, view and comment on videos.
+## 1. Project Overview
 
-## **Functional Requirements**
-**User and Channel Requirements**
+This project simulates a simplified version of a video-sharing platform (like YouTube), where users can:
+
+- Create accounts
+- Create and edit channels (one per user)
+- Upload, view, and delete videos
+- Comment on videos
+- Organize videos into playlists
+
+The system also supports saving and loading data via CSV files, allowing data persistence between sessions.
+
+---
+
+## 2. Functional Requirements
+
+**User and Channel Features:**
 - A user can:
-    - Create an account.
-    - Create a channel (only one per user).
-    - Edit their channel (e.g. change name or description).
+  - Create an account
+  - Create a channel (only one)
+  - Edit their channel name and description
 
 **Video Management:**
- - A user can:
-        - Upload a video (title, description, duration), if a channel exixts 
-        - ideos are linked to their channel.
-        - Each video has a unique ID
+- A user can:
+  - Upload a video (title, description, duration) if a channel exists
+  - Videos are linked to the user’s channel
+  - Each video has a unique ID
 
 **Video Persistence:**
-    - All uploaded videos are saved to a CSV file (e.g. videos.csv).
-    - The system can load videos from the CSV file when starting.
+- All videos are saved to user-specific CSV files (e.g., bob_videos.csv)
+- Videos are loaded from CSV when the program starts
 
-### **Persistence and Compatibility**
+**Compatibility:**
+- Files are saved in CSV format, compatible with Excel, Google Sheets, etc.
+- Files are easily accessible for sharing and backups
 
-- **CSV Format:**
-  - Schedules are saved in **CSV format**, ensuring compatibility with various applications like Microsoft Excel, Google Sheets, and LibreOffice Calc.
+**Performance and Scalability:**
+- Efficient processing with minimal delay
+- Runs on systems with limited resources
 
-- **File Accessibility:**
-  - Saved files are **easily accessible and transferable**, facilitating sharing and backup.
+---
 
-### **2. Performance and Scalability**
+## 3. What problem does our application solve?
 
-- **Efficient Processing:**
-  - The application efficiently handles schedule generation and modifications with minimal latency.
+This program simulates a video-sharing platform that allows users to:
 
-- **Resource Management:**
-  - Optimized to run on systems with **limited resources**, ensuring a broad user base.
+- Register and log in
+- Create and manage channels
+- Upload and manage video content
+- Organize content via playlists
+- Leave and view comments
 
+Data is saved using CSV files, enabling easy persistence and portability of content.
 
-**1.What problem does our application solve?**
+---
 
-This program simulates a basic video-sharing platform, similar to YouTube. It allows users to:
-    a. Create accounts
-    b. Make one channel per user
-    c. Upload, edit, and view videos
-    d. Organize videos into playlists
-    e. Comment on videos
+## 4. Program Structure
 
-The system supports persistence by saving user and video data to CSV files. This enables users to continue where they left off even after restarting the program.
+Implemented in Java using object-oriented design. Key components:
 
-**2. Program Structure:**
-The application is implemented in Java and follows an object-oriented design. The main components include:
-    a. Client.java – Acts as the entry point of the application; handles user interaction via console.
-    b. MQTubeManager.java – Controls the core logic, manages lists of users, videos, and playlists.
-    c. User.java – Represents a user with login credentials and personal information.
-    d. Channel.java – Represents a channel, tied to a user, where videos are uploaded.
-    e. Video.java – Represents individual videos uploaded to channels.
-    f. Playlist.java – Represents a playlist containing a list of videos.
-    g. Comment.java – Represents a comment left on a video.
-    h. Test_*.java - Various test classes for validating logic.
+- `Client.java` – Launches the application; handles user interaction
+- `MQTubeManager.java` – Main controller managing users, channels, playlists
+- `User.java` – Represents a user account
+- `Channel.java` – Represents a user's video channel
+- `Video.java` – Represents a single video
+- `Playlist.java` – Represents a collection of videos
+- `Comment.java` – Represents a user comment on a video
+- `CSVUtils.java` – Handles file read/write operations
+- `Test_*.java` – Unit tests for functionality
 
-**3. How to run the program:**
-     - Executable file: Client.java 
-    a. Upon running the program: You'll be greeted with "Welcome to MqTube!"
-    b. You'll need to log in using a predefined username or email and password.
-        Predefined users include:
-            -alice@students.mq.edu.au / pass123
-            -bob@mq.edu.au / bobpass
-            -charlie@students.mq.edu.au / charliepw
-    c. Main Menu Options
-        After logging in, you'll see a menu with the following options: 
-                1: View Videos – Displays all uploaded videos across channels.
-                2: View Playlist – Lists all user playlists and their videos.
-                3: Upload Video – Upload a new video to your channel (requires a channel)
-                    -You cannot upload a video without creating a channel. If a channel is not created, you will be
-                    prompted to create a new channel first. You may do so by selecting option 6. 
-                    -Uploaded videos will be shown on the user's CSV file. 
-                4: Delete Video – Remove one of your uploaded videos by ID.
-                    -Deleting a video will update the user's CSV file. 
-                5: Edit Playlist – Lets you rename a playlist or remove videos from it.
-                6: Edit Channel – Create or edit your channel name and description.
-                    -If creating a new channel, the channel will not show on the CSV file unless a video is first uploaded. 
-                7: Search Videos – Search for videos by keyword (title, description, or channel name).
-                8: Exit MqTube – End the session with a goodbye message.
+---
 
-**4. Task allocation**
+## 5. How to run the program
 
-Beatrice Annika Lim (48396966) : 33% 
-    -Set up classes 
-    -UML diagram 
-    -Created the CSV functionality
-    -Created the README.txt 
-    -Command line inputs 
-    -Methods for Video, Channel, and User
-    -Functionality for Client 
-    -JUNIT tetsing functionality 
+**Executable file:** `Client.java`
 
+### Step-by-step:
 
-Trieu Long Vu (SID) : 33% 
-    -Set up classes 
-    -UML diagram 
-    -Created playlist functionality 
-    -User class 
-    -Comments
-    -Methods for User, Dnode, and Playlist
+1. Run the program – you'll be greeted with: Welcome to MQTube!
 
+2. Log in with one of the predefined users:
+- alice@students.mq.edu.au / pass123
+- bob@mq.edu.au / bobpass
+- charlie@students.mq.edu.au / charliepw
+- diana@students.mq.edu.au / dianapass
 
-Yongwen Huang (SID) : 33% 
-    -Set up classes 
-    -UML diagram 
-    -Created the JUnit tests 
-    -Delegation
-    -Methods for Video 
-    -CSV for removing videos 
+3. Once logged in, you will see the Main Menu:
 
-**5. Method Analysis >**
+1: **View Videos** – Displays all uploaded videos  
+2: **View Playlist** – Shows all your playlists  
+3: **Upload Video** – Upload a video (must have a channel)  
+   - If no channel exists, you’ll be prompted to create one via option 6  
+   - Videos are saved to your CSV file  
+4: **Delete Video** – Remove one of your uploaded videos  
+   - Updates your CSV file  
+5: **Edit Playlist** – Rename playlist or remove videos  
+6: **Edit Channel** – Create/edit your channel info  
+   - Channel won’t appear in CSV until a video is uploaded  
+7: **Search Videos** – Search videos by keyword (title, description, or channel)  
+8: **Exit MQTube** – Exit the program
 
-    a. CSVUtils.appendVideoToCSV(Video video)
+---
 
-    What it does:
-    -Appends a single video's details as a new line to a user-specific CSV file.
-    Why it’s efficient:
-    -It writes directly to the file without needing to load or rewrite the entire CSV.
-    -The use of FileWriter(filename, true) appends data efficiently line-by-line.
-    -This uses very little memory, as only one Video object is handled at a time.
+## 6. Task Allocation
 
-    Alternative approach:
-    -Load the entire CSV file into a list, modify the list, and then rewrite the entire file.
-    -This would be slower for larger files and consume more memory.
-    Conclusion:
-    -The current approach is better suited for append-only operations and is faster and more memory-efficient in this context.
+**Beatrice Annika Lim (48396966)** – 33%  
+- Set up classes, UML diagram  
+- CSV functionality, Command line inputs  
+- Methods for Video, Channel, User  
+- Client logic, README, JUnit testing
 
-    b. MQTubeManager.searchVideos(String keyword)
+**Trieu Long Vu (SID)** – 33%  
+- Set up classes, UML diagram  
+- Playlist functionality, User class  
+- Comment features, Methods for User, DNode, Playlist
 
-    What it does:
-    -Searches all uploaded videos to find matches in the title, description, or channel name that contain the given keyword.
+**Yongwen Huang (SID)** – 33%  
+- Set up classes, UML diagram  
+- JUnit tests, Delegation  
+- Video methods, CSV for video removal
 
-    Current implementation approach:
-    -Iterates over every video in the system.
-    -For each video, it checks:
-        if the title contains the keyword,
-        if the description contains the keyword,
-        if the channel name contains the keyword.
+---
 
-    Time Complexity:
-    -Let n = number of videos.
-    -Each .contains() call is O(m) where m is the average string length.
-    -Worst-case complexity = O(n * m).
-    -This is acceptable for small datasets, but performance decreases linearly as the number of videos grows.
+## 7. Method Analysis
 
-    Alternative approach:
-   
+### a. `CSVUtils.appendVideoToCSV(Video video)`
 
-   
-    
+**What it does:**  
+Appends a single video's details as a new line in a user-specific CSV file.
 
+**Why it’s efficient:**  
+- Writes directly without needing to read or rewrite the full file  
+- Uses `FileWriter(filename, true)` to append line-by-line  
+- Handles only one object at a time (low memory usage)
 
+**Alternative approach:**  
+- Load entire CSV into memory, modify, and rewrite  
+- Slower and more memory-intensive for large files
+
+**Conclusion:**  
+The current method is faster and more memory-efficient for append-only operations.
+
+---
+
+### b. `MQTubeManager.searchVideos(String keyword)`
+
+**What it does:**  
+Searches all uploaded videos for a keyword match in title, description, or channel name.
+
+**Current implementation:**  
+- Iterative loop over all videos  
+- For each video: checks `.contains()` on 3 fields
+
+**Time Complexity:**  
+- Let `n` = number of videos, `m` = average string length  
+- Total: **O(n × m)**
+
+**Alternative: Recursive Search**
+
+```java
+public void recursiveSearch(ArrayList<Video> videos, String keyword, int index) {
+ if (index >= videos.size()) return;
+ Video video = videos.get(index);
+ if (video.getTitle().contains(keyword) ||
+     video.getDescription().contains(keyword) ||
+     video.getChannel().getChannelName().contains(keyword)) {
+     System.out.println(video);
+ }
+ recursiveSearch(videos, keyword, index + 1);
+}
 
