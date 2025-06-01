@@ -34,6 +34,8 @@ public class Channel {
         }
        Playlist newPlaylist = new Playlist(name, owner);
         playlists.add(newPlaylist);
+
+        
         return newPlaylist;
     }
 
