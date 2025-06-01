@@ -24,7 +24,6 @@ public class Channel {
     // Method for adding a video to a channel and prints a confirmation message.
     public void uploadVideo(Video video) {
         videos.add(video);
-        System.out.println("Video \"" + video.getTitle() + "\" uploaded to channel: " + channelName); // upload successful message
     }
 
     // Method for creating a playlist for a channel (limiting to 5 playlists per channel)
@@ -35,7 +34,6 @@ public class Channel {
         }
        Playlist newPlaylist = new Playlist(name, owner);
         playlists.add(newPlaylist);
-        System.out.println("Playlist \"" + name + "\" created.");
         return newPlaylist;
     }
 
