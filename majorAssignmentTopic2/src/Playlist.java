@@ -73,7 +73,7 @@ public class Playlist {
     } 
 
     public boolean removeVideoById(int videoId) {
-        DNode toRemove = findVideoNode(videoId);
+        DNode toRemove = findVideo(videoId);
         if (toRemove != null) {
             removeVideoFromPlaylist(toRemove);
             return true;
@@ -86,8 +86,15 @@ public class Playlist {
         return start;
     }
 
-    //added for dele
-    public DNode findVideoNode(int videoId) {
+    public Video searchVideoByTitle(DNode current, String title) {
+        if (current == null) return null;
+        if (current.getVideo().getTitle().equalsIgnoreCase(title)) {
+            return current.getVideo();
+        }
+        return searchVideoByTitle(current.getNext(), title);
+    }
+
+    public DNode findVideo(int videoId) {
         DNode current = start;
         while (current != null) {
             if (current.getVideo().getId() == videoId) {
@@ -99,7 +106,7 @@ public class Playlist {
     }
 
     public boolean containsVideo(int videoId) {
-        return findVideoNode(videoId) != null;
+        return findVideo(videoId) != null;
     }
 
     public User getOwner() {
