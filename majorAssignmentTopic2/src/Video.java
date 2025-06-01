@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /*
  * This class represents a video uploaded to a channel
  * It contains methods to operate on video objects in a channel
