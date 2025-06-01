@@ -1,5 +1,5 @@
 # MQ TUBE
-# COMP1010 Group
+# COMP1010 Group Anything
 
 ## 1. Project Overview
 
@@ -82,25 +82,25 @@ Implemented in Java using object-oriented design. Key components:
 1. Run the program – you'll be greeted with: Welcome to MQTube!
 
 2. Log in with one of the predefined users:
-- alice@students.mq.edu.au / pass123
-- bob@mq.edu.au / bobpass
-- charlie@students.mq.edu.au / charliepw
-- diana@students.mq.edu.au / dianapass
+   - alice@students.mq.edu.au / pass123
+   - bob@mq.edu.au / bobpass
+   - charlie@students.mq.edu.au / charliepw
+   - diana@students.mq.edu.au / dianapass
 
 3. Once logged in, you will see the Main Menu:
 
-1: **View Videos** – Displays all uploaded videos  
-2: **View Playlist** – Shows all your playlists  
-3: **Upload Video** – Upload a video (must have a channel)  
-   - If no channel exists, you’ll be prompted to create one via option 6  
-   - Videos are saved to your CSV file  
-4: **Delete Video** – Remove one of your uploaded videos  
-   - Updates your CSV file  
-5: **Edit Playlist** – Rename playlist or remove videos  
-6: **Edit Channel** – Create/edit your channel info  
-   - Channel won’t appear in CSV until a video is uploaded  
-7: **Search Videos** – Search videos by keyword (title, description, or channel)  
-8: **Exit MQTube** – Exit the program
+   1: **View Videos** – Displays all uploaded videos  
+   2: **View Playlist** – Shows all your playlists  
+   3: **Upload Video** – Upload a video (must have a channel)  
+      - If no channel exists, you’ll be prompted to create one via option 6  
+      - Videos are saved to your CSV file  
+   4: **Delete Video** – Remove one of your uploaded videos  
+      - Updates your CSV file  
+   5: **Edit Playlist** – Rename playlist or remove videos  
+   6: **Edit Channel** – Create/edit your channel info  
+      - Channel won’t appear in CSV until a video is uploaded  
+   7: **Search Videos** – Search videos by keyword (title, description, or channel)  
+   8: **Exit MQTube** – Exit the program
 
 ---
 
@@ -162,13 +162,60 @@ Searches all uploaded videos for a keyword match in title, description, or chann
 
 ```java
 public void recursiveSearch(ArrayList<Video> videos, String keyword, int index) {
- if (index >= videos.size()) return;
- Video video = videos.get(index);
- if (video.getTitle().contains(keyword) ||
-     video.getDescription().contains(keyword) ||
-     video.getChannel().getChannelName().contains(keyword)) {
-     System.out.println(video);
- }
- recursiveSearch(videos, keyword, index + 1);
+    if (index >= videos.size()) return;
+    Video video = videos.get(index);
+    if (video.getTitle().contains(keyword) ||
+        video.getDescription().contains(keyword) ||
+        video.getChannel().getChannelName().contains(keyword)) {
+        System.out.println(video);
+    }
+    recursiveSearch(videos, keyword, index + 1);
 }
+```
 
+**Conclusion:**  
+Recursive method has the same time complexity but higher memory usage (call stack). Iterative is preferred for larger datasets.
+
+---
+
+## 8. Assessment Criteria Justification
+
+### ✅ Unit Testing (2 marks)
+
+- We created **JUnit test classes** (e.g., `Test_User.java`, `Test_Video.java`, `Test_Channel.java`, `Test_CSVUtils.java`) to test:
+  - Valid and invalid inputs
+  - Edge cases (e.g., empty title, max duration videos, non-existent users)
+  - Logical correctness of getters, setters, and file operations
+
+---
+
+### ✅ Functionality (3 marks)
+
+- The program achieves all core functions of a simple video-sharing platform:
+  - Register/login
+  - Channel creation/editing
+  - Video upload/view/delete
+  - Playlist creation/editing
+  - Commenting and searching
+  - Persistent storage with CSV
+
+---
+
+### ✅ Scope (5 marks)
+
+- **(1 mark)** Uses object of another user-defined class:  
+  - `Channel` has a `User` object (`private User owner;`)
+
+- **(1 mark)** Uses ArrayList of user-defined objects:  
+  - `MQTubeManager` has `ArrayList<User>` and `ArrayList<Channel>`  
+  - `Playlist` has `ArrayList<Video>`
+
+- **(2 marks)** Recursive structure:  
+  - `DNode` class represents a recursive doubly-linked list  
+  - We use a recursive method countPlaylistVideos(DNode) in Playlist.java to traverse and count videos stored in a doubly-linked list (DNode), satisfying the recursive data structure requirement.
+
+- **(1 mark)** File I/O implemented:  
+  - CSV file reading with `BufferedReader`, writing with `FileWriter`  
+  - One CSV per user and for all videos
+
+---
