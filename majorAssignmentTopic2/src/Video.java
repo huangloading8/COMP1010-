@@ -10,12 +10,9 @@ public class Video {
     private int videoID;
     private String title;
     private String description;
-    private int viewCount;
-    private int likeCount;
     private int duration;
     private int dateUploaded;
     private Channel channel;
-    private ArrayList<Comment> comments;
 
     // This is the Video constructor with all of the required information about a video
     public Video(String title, String description, int duration, int dateUploaded, Channel channel) {
@@ -25,9 +22,7 @@ public class Video {
         this.duration = duration;
         this.dateUploaded = dateUploaded;
         this.channel = channel;
-        this.viewCount = 0;
-        this.likeCount = 0;
-        this.comments = new ArrayList<>();
+     
     }
 
     public String getTitle() {
@@ -54,21 +49,6 @@ public class Video {
         return channel;
     }
 
-    public int getViewCount() {
-        return viewCount;
-    }
-
-    public int getLikeCount() {
-        return likeCount;
-    }
-
-    public void addComment(Comment comment) {
-        comments.add(comment);
-    }
-
-    public ArrayList<Comment> getComments() {
-        return comments;
-    }
 
     // This method returns the information about a video
     public String getVideoInfo() {
@@ -77,10 +57,7 @@ public class Video {
                 "\nDescription: " + description +
                 "\nDuration: " + duration + " seconds" +
                 "\nUploaded on: " + dateUploaded +
-                "\nChannel: " + channel.getChannelName() +
-                "\nViews: " + viewCount +
-                "\nLikes: " + likeCount +
-                "\nComments: " + comments.size();
+                "\nChannel: " + channel.getChannelName();
     }
     /*
      * This method manually sets the video ID.

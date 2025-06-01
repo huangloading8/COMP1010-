@@ -23,8 +23,6 @@ public class Test_Video {
         assertEquals(120, testVideo.getDuration());
         assertEquals(20250101, testVideo.getDateUploaded());
         assertEquals(testChannel, testVideo.getChannel());
-        assertEquals(0, testVideo.getViewCount());
-        assertEquals(0, testVideo.getLikeCount());
     }
 
    @Test
@@ -34,10 +32,7 @@ public void testVideoInfo() {
             "\nDescription: " + testVideo.getDescription() +
             "\nDuration: " + testVideo.getDuration() + " seconds" +
             "\nUploaded on: " + testVideo.getDateUploaded() +
-            "\nChannel: " + testChannel.getChannelName() +
-            "\nViews: " + testVideo.getViewCount() +
-            "\nLikes: " + testVideo.getLikeCount() +
-            "\nComments: " + testVideo.getComments().size();
+            "\nChannel: " + testChannel.getChannelName();
 
     assertEquals(expectedInfo, testVideo.getVideoInfo());
 }
