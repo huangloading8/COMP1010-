@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.File;
 
 /*
  * This is the main class, which handles the core logic for user management,
@@ -75,28 +76,36 @@ public class MQTubeManager {
 
     // Method for loading users from CSV data files to the program
     private void loadUsersFromCSV() {
-        String csvFile = "data/users.csv";
-        String line;
-        String csvSplitBy = ",";
+    String csvFile = "data/users.csv";
+    String line;
+    String csvSplitBy = ",";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-            // Skip the header line
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] userData = line.split(csvSplitBy);
-                if (userData.length == 3) {
-                    String username = userData[0].trim();
-                    String email = userData[1].trim();
-                    String password = userData[2].trim();
-                    // Create user and add to list
-                    User user = User.createAccount(username, email, password);
-                    users.add(user);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading users from CSV: " + e.getMessage());
-        }
+    File file = new File(csvFile);
+    if (!file.exists()) {
+        System.out.println("[INFO] No existing users.csv file found. Skipping load.");
+        return; // Skip loading if the file doesn't exist
     }
+
+    try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+        // Skip the header line if present
+        br.readLine();
+        while ((line = br.readLine()) != null) {
+            String[] userData = line.split(csvSplitBy);
+            if (userData.length == 3) {
+                String username = userData[0].trim();
+                String email = userData[1].trim();
+                String password = userData[2].trim();
+
+                // Create user and add to list
+                User user = User.createAccount(username, email, password);
+                users.add(user);
+            }
+        }
+    } catch (IOException e) {
+        System.out.println("Error reading users from CSV: " + e.getMessage());
+    }
+}
+
         // Login Feature
        //CSVUtils.exportAllVideosToCSV(channels); // added this: exports all videos from scratch, comment out affter first run
 
