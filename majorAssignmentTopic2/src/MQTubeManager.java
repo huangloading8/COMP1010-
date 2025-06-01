@@ -370,19 +370,17 @@ public class MQTubeManager {
         System.out.print("Enter the video ID to remove: ");
         int videoID = Integer.parseInt(scanner.nextLine());
 
-        for (Channel c : channels) {
-            if (c.getOwner().equals(loggedInUser)) {
-                Video videoToRemove = c.getVideoById(videoID); // assumes this method exists
-                if (videoToRemove != null) {
-                    c.removeVideo(videoID);
-                    CSVUtils.removeVideoFromCSV(videoToRemove);
-                    System.out.println("Video deleted and CSV updated.");
-                    return;
-                }
-            }
+        Channel userChannel = loggedInUser.getChannel();
+        if (userChannel == null) {
+            System.out.println("Video ID " + videoID + " not found.");
+            return;
         }
 
-        System.out.println("No video with ID " + videoID + " found in your channel.");
+        if (userChannel.removeVideoFromChannel(videoID)) {
+            System.out.println("Video ID " + videoID + " has been removed.");
+        } else {
+            System.out.println("No video with ID " + videoID + " found in your channel.");
+        }
     }
 
     /*
