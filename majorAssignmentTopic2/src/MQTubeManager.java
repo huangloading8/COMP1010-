@@ -82,7 +82,6 @@ public class MQTubeManager {
 
     File file = new File(csvFile);
     if (!file.exists()) {
-        System.out.println("[INFO] No existing users.csv file found. Skipping load.");
         return; // Skip loading if the file doesn't exist
     }
 
@@ -138,12 +137,14 @@ public class MQTubeManager {
             } else if (action == 4) {
                 deleteVideo(loggedInUser);
             } else if (action == 5) {
-                editPlaylist(loggedInUser);
+                createPlaylist(loggedInUser);
             } else if (action == 6) {
-                editChannel(loggedInUser);
+                editPlaylist(loggedInUser);
             } else if (action == 7) {
-                searchVideos();
+                editChannel(loggedInUser);
             } else if (action == 8) {
+                searchVideos();
+            } else if (action == 9) {
                 System.out.println("Goodbye from MqTube!");
                 exit = true;
             } else {
@@ -237,9 +238,22 @@ public class MQTubeManager {
 
     //  Appends a newly registered user's data to the CSV data file
     private void saveUserToCSV(User user) {
-        try (FileWriter writer = new FileWriter("data/users.csv", true)) { // true = append mode
-            String line = String.format("%s,%s,%s\n", user.getUsername(), user.getEmail(), user.getPassword());
-            writer.write(line);
+        try {
+            File file = new File("data/users.csv");
+            boolean fileExists = file.exists();
+            
+            try (FileWriter writer = new FileWriter("data/users.csv", true)) {
+                // Write header if file is new
+                if (!fileExists) {
+                    writer.write("Username,Email,Password\n");
+                }
+                
+                String line = String.format("%s,%s,%s\n", 
+                    user.getUsername(), 
+                    user.getEmail(), 
+                    user.getPassword());
+                writer.write(line);
+            }
         } catch (IOException e) {
             System.out.println("Error saving user to file: " + e.getMessage());
         }
@@ -248,15 +262,16 @@ public class MQTubeManager {
     // This method displays the list of all user actions
     private void showMenu() {
         System.out.println("\nWhat would you like to do?");
-        System.out.println(" 1. View Videos");
-        System.out.println(" 2. View Playlist");
-        System.out.println(" 3. Upload Video");
-        System.out.println(" 4. Delete Video");
-        System.out.println(" 5. Edit Playlist");
-        System.out.println(" 6. Edit Channel");
-        System.out.println(" 7. Search Videos");
-        System.out.println(" 8. Exit MqTube");
-        System.out.print("Enter the number for your action: ");
+    System.out.println(" 1. View Videos");
+    System.out.println(" 2. View Playlist");
+    System.out.println(" 3. Upload Video");
+    System.out.println(" 4. Delete Video");
+    System.out.println(" 5. Create Playlist");
+    System.out.println(" 6. Edit Playlist");
+    System.out.println(" 7. Edit Channel");
+    System.out.println(" 8. Search Videos");
+    System.out.println(" 9. Exit MqTube");
+    System.out.print("Enter the number for your action: ");
     }
 
     
@@ -412,6 +427,27 @@ public class MQTubeManager {
         }
     }
 
+        /*
+    * This method allows users to create a new playlist for their channel
+    */
+    private void createPlaylist(User loggedInUser) {
+        Channel userChannel = loggedInUser.getChannel();
+        
+        if (userChannel == null) {
+            System.out.println("You need to create a channel before creating playlists.");
+            return;
+        }
+        
+        System.out.print("Enter playlist name: ");
+        String playlistName = scanner.nextLine();
+        
+        Playlist newPlaylist = userChannel.createPlaylist(playlistName);
+        if (newPlaylist != null) {
+            System.out.println("Playlist '" + playlistName + "' created successfully!");
+            CSVUtils.appendPlaylistToCSV(newPlaylist);
+        }
+    }
+
     /*
      * This is the option to show the menu for editing the playlist
      * Users can view playlists from their channels, as well as
@@ -419,14 +455,14 @@ public class MQTubeManager {
      */
     private void editPlaylist(User loggedInUser) {
         Channel userChannel = loggedInUser.getChannel();
-
+    
         if (userChannel == null) {
             System.out.println("You need a channel before editing playlists.");
             return;
         }
-
+    
         ArrayList<Playlist> playlists = userChannel.getPlaylists();
-
+    
         System.out.println("\n=== Playlist Menu ===");
         System.out.println("1. View Playlists");
         System.out.println("2. Add Video to Playlist");

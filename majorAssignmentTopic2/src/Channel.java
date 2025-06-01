@@ -19,6 +19,13 @@ public class Channel {
         this.channelDescription = channelDescription;
         this.videos = new ArrayList<>();
         this.playlists = new ArrayList<>();
+
+    // Loads all videos associated with user
+        this.videos = CSVUtils.loadVideosForUser(this);
+        ArrayList<String> playlistNames = CSVUtils.loadPlaylistsForUser(owner);
+        for (String name : playlistNames) {
+            createPlaylist(name);
+        }
     }
 
     // Method for adding a video to a channel and prints a confirmation message.

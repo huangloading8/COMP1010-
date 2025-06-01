@@ -44,6 +44,61 @@ public class CSVUtils {
         }
     }
 
+    // Appends a new playlist to the user's playlist CSV file
+    public static void appendPlaylistToCSV(Playlist playlist) {
+        File directory = new File("data");
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        String filename = "data/" + playlist.getOwner().getUsername() + "_playlists.csv";
+        
+        try (FileWriter writer = new FileWriter(filename, true)) {
+            String line = playlist.getPlaylistName() + "\n";
+            writer.append(line);
+        } catch (IOException e) {
+            System.err.println("Error writing playlist to CSV: " + e.getMessage());
+        }
+    }
+
+    // Loads all playlists for a user from CSV
+    public static ArrayList<String> loadPlaylistsForUser(User user) {
+        ArrayList<String> playlists = new ArrayList<>();
+        String filename = "data/" + user.getUsername() + "_playlists.csv";
+
+        File file = new File(filename);
+        if (!file.exists()) return playlists;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                playlists.add(line.trim());
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading playlists from CSV: " + e.getMessage());
+        }
+
+        return playlists;
+    }
+
+    // Updates the entire playlist CSV file for a user
+    public static void updatePlaylistsCSV(User user, ArrayList<Playlist> playlists) {
+        File directory = new File("data");
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        String filename = "data/" + user.getUsername() + "_playlists.csv";
+        
+        try (FileWriter writer = new FileWriter(filename)) {
+            for (Playlist playlist : playlists) {
+                writer.append(playlist.getPlaylistName() + "\n");
+            }
+        } catch (IOException e) {
+            System.err.println("Error updating playlists CSV: " + e.getMessage());
+        }
+    }
+
     // Loads all videos from the CSV file associated with a user's channel
     public static ArrayList<Video> loadVideosForUser(Channel channel) {
         ArrayList<Video> videos = new ArrayList<>();
@@ -71,6 +126,7 @@ public class CSVUtils {
 
         return videos;
     }
+    
 
     // Exports all videos for all users/channels into individual CSV files (used at startup or debugging)
     public static void exportAllVideosToCSV(ArrayList<Channel> channels) {
